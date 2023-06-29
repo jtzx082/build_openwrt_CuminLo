@@ -14,10 +14,9 @@ on:
   repository_dispatch:
   workflow_dispatch:
     inputs:
-      ssh:
-        description: 'SSH connection to Actions'
-        required: false
-        default: 'false'
+      perform_deploy:
+        required: true
+        type: boolean
 
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
@@ -36,7 +35,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-22.04
-
+    if: ${{ inputs.perform_deploy }}
     steps:
     - name: Checkout
       uses: actions/checkout@main
