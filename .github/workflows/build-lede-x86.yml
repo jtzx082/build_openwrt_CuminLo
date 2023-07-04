@@ -16,6 +16,7 @@ on:
     inputs:
       perform_deploy:
         required: true
+        default: true
         type: boolean
 
 env:
