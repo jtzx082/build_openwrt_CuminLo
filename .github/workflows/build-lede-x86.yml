@@ -91,6 +91,9 @@ jobs:
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
 
+    - name: df
+      run: df -h
+
     - name: Compile the firmware
       id: compile
       run: |
