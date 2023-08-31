@@ -50,7 +50,7 @@ jobs:
         apt list --installed
         echo "======================="
         docker rmi `docker images -q`
-        docker image prune
+        docker image prune -f
         sudo -E rm -rf /etc/apt/sources.list.d/* /etc/mysql /etc/php /usr/share/dotnet /usr/local/lib/android /opt/ghc
         sudo -E apt-mark hold grub-efi-amd64-signed
         sudo -E apt-get -qq update
