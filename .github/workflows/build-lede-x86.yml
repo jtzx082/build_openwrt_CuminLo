@@ -60,7 +60,7 @@ jobs:
         sudo swapoff -a
         sudo rm -f /mnt/swapfile
         sudo -E apt-get -qq update
-        sudo -E apt-get -qq -y purge azure-cli* docker* ghc* zulu* llvm* firefox google* powershell* openjdk* mysql* php* mongodb* dotnet* snap* postgresql* podman microsoft-edge-stable ruby* temurin* golang* java-common node* ubuntu-mono fonts-noto-mono mono* libmono*
+        sudo -E apt-get -qq -y purge azure-cli* docker* ghc* zulu* llvm* firefox google* powershell* openjdk* mysql* php* mongodb* dotnet* snap* postgresql* podman microsoft-edge-stable ruby* temurin* golang* java-common node* ubuntu-mono fonts-noto-mono mono* libmono* openjdk-11-jre-headless
         for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do sudo apt-get remove $pkg; done
         sudo -E apt-get update
         sudo -E apt-get install ca-certificates curl gnupg
