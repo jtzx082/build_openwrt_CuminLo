@@ -61,8 +61,7 @@ jobs:
         sudo rm -f /mnt/swapfile
         sudo -E apt-get -qq update
         sudo -E apt-get -qq -y purge azure-cli* ghc* zulu* llvm* firefox google* powershell* openjdk* mysql* php* mongodb* dotnet* snap* postgresql* podman microsoft-edge-stable ruby* temurin* golang* java-common node* ubuntu-mono fonts-noto-mono mono* libmono* openjdk-11-jre-headless
-        sudo -E apt-get update
-        sudo -E apt-get install ca-certificates curl gnupg
+        sudo -E apt-get -qq install ca-certificates curl gnupg
         sudo -E apt -y full-upgrade
         sudo -E apt-get -qq -y install ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential bzip2 ccache cmake cpio curl device-tree-compiler fastjar flex gawk gettext gcc-multilib g++-multilib git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libreadline-dev libssl-dev libtool lrzsz mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python2.7 python3 python3-pyelftools libpython3-dev qemu-utils rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip libfuse-dev vim wget xmlto xxd zlib1g-dev python3-setuptools jq curl git-core upx aria2 nmap ncat ndiff make gcc python3-sphinx texlive-latex-extra
         sudo -E apt-get -qq -y autoremove --purge
@@ -205,7 +204,7 @@ jobs:
         keep_minimum_runs: 3
 
     - name: Delete Older Releases
-      uses: dev-drprasad/delete-older-releases@v0.3.3
+      uses: dev-drprasad/delete-older-releases@v0.3.4
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
         keep_latest: 5
