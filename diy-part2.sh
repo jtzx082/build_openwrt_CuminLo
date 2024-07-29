@@ -16,3 +16,7 @@ sed -i 's/luci-theme-bootstrap/luci-theme-netgear/g' feeds/luci/collections/luci
 
 # 删除原默认主题
 rm -rf package/lean/luci-theme-bootstrap
+
+# 更新Go
+rm -rf feeds/packages/lang/golang
+git clone https://github.com/sbwml/packages_lang_golang -b 22.x feeds/packages/lang/golang
