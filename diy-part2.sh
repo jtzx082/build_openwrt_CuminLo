@@ -18,7 +18,7 @@ sed -i 's/luci-theme-bootstrap/luci-theme-netgear/g' feeds/luci/collections/luci
 # rm -rf package/lean/luci-theme-bootstrap
 
 # 修改默认主机名
-sed -i '/uci commit system/i\uci set system.@system[0].hostname='Soft_Router'' package/lean/default-settings/files/zzz-default-settings
+sed -i '/uci commit system/i\uci set system.@system[0].hostname='LoHome-Router'' package/lean/default-settings/files/zzz-default-settings
  
 # 加入编译者信息
 sed -i "s/OpenWrt /NewLuo Build $(TZ=UTC-8 date "+%Y.%m.%d") @ OpenWrt /g" package/lean/default-settings/files/zzz-default-settings
