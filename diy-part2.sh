@@ -26,3 +26,13 @@ sed -i "s/OpenWrt /NewLuo Build $(TZ=UTC-8 date "+%Y.%m.%d") @ OpenWrt /g" packa
 # 更新Go
 rm -rf feeds/packages/lang/golang
 git clone https://github.com/sbwml/packages_lang_golang -b 22.x feeds/packages/lang/golang
+
+# 更新 adguardhome
+update_adguardhome() {
+    adguardhome_version=$(curl -s "https://api.github.com/repos/AdguardTeam/AdGuardHome/releases" | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g' | awk -F "v" '{print $2}')
+    sed -ri "s/(PKG_VERSION:=)[^\"]*/\1$adguardhome_version/" feeds/packages/net/adguardhome/Makefile
+    sed -i 's/release/beta/g' feeds/packages/net/adguardhome/Makefile
+    sed -i 's/.*PKG_MIRROR_HASH.*/#&/' feeds/packages/net/adguardhome/Makefile
+    sed -i '/init/d' feeds/packages/net/adguardhome/Makefile
+}
+update_adguardhome
