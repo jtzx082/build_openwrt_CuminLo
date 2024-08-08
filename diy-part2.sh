@@ -27,7 +27,7 @@ sed -i "s/OpenWrt /NewLuo Build $(TZ=UTC-8 date "+%Y.%m.%d") @ OpenWrt /g" packa
 rm -rf feeds/packages/lang/golang
 git clone https://github.com/sbwml/packages_lang_golang -b 22.x feeds/packages/lang/golang
 
-# 更新 adguardhome
+# 更新; 每次获取最新 adguardhome 二进制
 update_adguardhome() {
     adguardhome_version=$(curl -s "https://api.github.com/repos/AdguardTeam/AdGuardHome/releases" | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g' | awk -F "v" '{print $2}')
     sed -ri "s/(PKG_VERSION:=)[^\"]*/\1$adguardhome_version/" feeds/packages/net/adguardhome/Makefile
@@ -36,3 +36,13 @@ update_adguardhome() {
     sed -i '/init/d' feeds/packages/net/adguardhome/Makefile
 }
 update_adguardhome
+
+# 更新 mosdns
+update_mosdns() {
+    find ./ | grep Makefile | grep v2ray-geodata | xargs rm -f
+    find ./ | grep Makefile | grep mosdns | xargs rm -f
+
+    git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
+    git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
+}
+update_mosdns
