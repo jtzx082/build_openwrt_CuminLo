@@ -9,7 +9,7 @@
 sed -i 's/192.168.1.1/192.168.50.1/g' package/base-files/files/bin/config_generate
 
 # 修改 netgear 为默认主题
-sed -i 's/luci-theme-bootstrap/luci-theme-netgear/g' feeds/luci/collections/luci/Makefile
+#sed -i 's/luci-theme-bootstrap/luci-theme-netgear/g' feeds/luci/collections/luci/Makefile
 
 # 更新Go
 rm -rf feeds/packages/lang/golang
@@ -33,4 +33,4 @@ update_mosdns() {
     git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
     git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
 }
-update_mosdns
+#update_mosdns
