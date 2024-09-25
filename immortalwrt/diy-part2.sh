@@ -21,7 +21,7 @@ update_adguardhome() {
     sed -ri "s/(PKG_VERSION:=)[^\"]*/\1$adguardhome_version/" feeds/packages/net/adguardhome/Makefile
     sed -i 's/release/beta/g' feeds/packages/net/adguardhome/Makefile
     sed -i 's/.*PKG_MIRROR_HASH.*/#&/' feeds/packages/net/adguardhome/Makefile
-    sed -i '/init/d' feeds/packages/net/adguardhome/Makefile
+    # sed -i '/init/d' feeds/packages/net/adguardhome/Makefile
 }
 update_adguardhome
 
@@ -33,4 +33,4 @@ update_mosdns() {
     git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
     git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
 }
-update_mosdns
+#update_mosdns
