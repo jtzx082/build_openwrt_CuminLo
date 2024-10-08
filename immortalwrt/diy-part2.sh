@@ -24,3 +24,11 @@ update_adguardhome() {
     # sed -i '/init/d' feeds/packages/net/adguardhome/Makefile
 }
 update_adguardhome
+
+#删除冲突的包
+delete_conflict_package() {
+    # filebrowser
+    rm -rf ./feeds/kenzo/filebrowser
+    rm -rf ./feeds/kenzo/luci-app-filebrowser
+}
+delete_conflict_package

@@ -46,3 +46,11 @@ update_mosdns() {
     git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
 }
 update_mosdns
+
+#删除冲突的包
+delete_conflict_package() {
+    # filebrowser
+    rm -rf ./feeds/kenzo/filebrowser
+    rm -rf ./feeds/kenzo/luci-app-filebrowser
+}
+delete_conflict_package
