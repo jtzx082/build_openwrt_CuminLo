@@ -31,4 +31,4 @@ delete_conflict_package() {
     rm -rf ./feeds/kenzo/filebrowser
     rm -rf ./feeds/kenzo/luci-app-filebrowser
 }
-delete_conflict_package
+#delete_conflict_package
