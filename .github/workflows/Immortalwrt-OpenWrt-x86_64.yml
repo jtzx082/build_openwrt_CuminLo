@@ -26,6 +26,7 @@ env:
   CONFIG_FILE: immortalwrt/.config
   DIY_P1_SH: immortalwrt/diy-part1.sh
   DIY_P2_SH: immortalwrt/diy-part2.sh
+  DIY_RM_SH: immortalwrt/diy-rm.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: false
   UPLOAD_COWTRANSFER: false
@@ -101,6 +102,12 @@ jobs:
 
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
+
+    - name: Rm conflict feeds
+      run: |
+        chmod +x $DIY_RM_SH
+        cd openwrt
+        $GITHUB_WORKSPACE/$DIY_RM_SH
 
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
