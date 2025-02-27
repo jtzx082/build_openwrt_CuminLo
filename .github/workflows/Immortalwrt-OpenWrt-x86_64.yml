@@ -33,6 +33,7 @@ env:
   UPLOAD_WETRANSFER: false
   UPLOAD_RELEASE: true
   DISPLAY_APT_LIST: false
+  DELETE_USELESS_FILES: true
 
 jobs:
   build:
@@ -55,6 +56,40 @@ jobs:
         echo -e "\n\e[1;32mKernel:\e[0m"
         uname -a
         echo
+
+    - name: "Optimize disk space"
+      if: env.DELETE_USELESS_FILES == 'true' && !cancelled()
+      uses: "hugoalh/disk-space-optimizer-ghaction@v0.8.1"
+      with:
+        operate_sudo: "True"
+        general_include: ".+"
+        general_exclude: |-
+          ^GCC$
+          ^G\+\+$
+          Clang
+          LLVM
+        docker_include: ".+"
+        docker_prune: "True"
+        docker_clean: "True"
+        apt_prune: "True"
+        apt_clean: "True"
+        homebrew_prune: "True"
+        homebrew_clean: "True"
+        npm_prune: "True"
+        npm_clean: "True"
+        os_swap: "True"
+        
+    - name: Free up disk space
+      if: env.DELETE_USELESS_FILES == 'true' && !cancelled()
+      uses: easimon/maximize-build-space@master
+      with: 
+        root-reserve-mb: 2048
+        swap-size-mb: 1
+        remove-dotnet: 'true'
+        remove-android: 'true'
+        remove-haskell: 'true'
+        remove-codeql: 'true'
+        remove-docker-images: 'true'
 
     - name: Display apt list
       if: env.DISPLAY_APT_LIST == 'true' && !cancelled()
