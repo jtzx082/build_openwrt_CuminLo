@@ -108,7 +108,7 @@ jobs:
         sudo swapoff -a
         sudo rm -f /mnt/swapfile
         sudo -E apt-get -qq update
-        sudo -E apt-get -qq -y purge azure-cli* ghc* zulu* llvm* firefox google* powershell* openjdk* mysql* php* mongodb* dotnet* snap* postgresql* podman microsoft-edge-stable ruby* temurin* golang* java-common node* ubuntu-mono fonts-noto-mono mono* libmono* openjdk-11-jre-headless
+        sudo -E apt-get -qq -y purge azure-cli* ghc* zulu* llvm* firefox google* powershell* openjdk* mysql* php* mongodb* dotnet* snap* postgresql* podman microsoft-edge-stable ruby* golang* java-common node* ubuntu-mono fonts-noto-mono mono* libmono* openjdk-11-jre-headless
         sudo -E apt-get -qq install ca-certificates curl gnupg
         sudo -E apt -y full-upgrade
         sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.org/init_build_environment.sh)'
