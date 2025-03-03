@@ -95,10 +95,11 @@ jobs:
         mkdir -p $GITHUB_WORKSPACE/imagebuilder
         tar -I zstd -xf $IMAGE_BUILD_NAME -C $GITHUB_WORKSPACE/imagebuilder --strip-components=1
         rm -rf $IMAGE_BUILD_NAME
+        cd $GITHUB_WORKSPACE/imagebuilder && pwd && ls -al
 
     - name: Apply config patch
-      working-directory: ${{ env.GITHUB_WORKSPACE }}/imagebuilder
       run: |
+        cd $GITHUB_WORKSPACE/imagebuilder && ls -al
         if [ -f .config ]; then
           patch .config < $GITHUB_WORKSPACE/master.config.patch || { echo "Patch failed"; exit 1; }
           echo "Patch applied successfully"
@@ -111,15 +112,14 @@ jobs:
 
     - name: ImageBuild the firmware
       id: compile
-      working-directory: ${{ env.GITHUB_WORKSPACE }}/imagebuilder
       run: |
         PACKAGES=$(cat $GITHUB_WORKSPACE/master.packages.txt | tr '\n' ' ')
+        cd imagebuilder
         make image PROFILE="generic" PACKAGES="$PACKAGES" || { echo "Compile failed"; exit 1; }
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: Organize files
       id: organize
-      working-directory: ${{ env.GITHUB_WORKSPACE }}
       if: steps.compile.outputs.status == 'success' && !cancelled()
       run: |
         cd imagebuilder/bin/targets/x86/64/ || { echo "Directory not found"; exit 1; }
