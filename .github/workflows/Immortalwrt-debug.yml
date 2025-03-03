@@ -6,7 +6,9 @@
 #
 # https://github.com/P3TERX/Actions-OpenWrt
 # Description: Build OpenWrt using GitHub Actions
-#
+# 使用ImageBuild的方式
+# - Master: 主路由模式，功能较全
+# - AP:     Ap模式 精简
 
 name: Immortalwrt-debug
 
@@ -20,19 +22,9 @@ on:
         type: boolean
 
 env:
-  REPO_URL: https://github.com/immortalwrt/immortalwrt
-  REPO_BRANCH: openwrt-23.05
-  FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: immortalwrt/.config
-  DIY_P1_SH: immortalwrt/diy-part1.sh
-  DIY_P2_SH: immortalwrt/diy-part2.sh
-  DIY_RM_SH: immortalwrt/diy-rm.sh
-  UPLOAD_BIN_DIR: false
-  UPLOAD_FIRMWARE: false
-  UPLOAD_COWTRANSFER: false
-  UPLOAD_WETRANSFER: false
+  IMAGE_BUILD_URL: https://downloads.immortalwrt.org/releases/24.10.0/targets/x86/64/immortalwrt-imagebuilder-24.10.0-x86-64.Linux-x86_64.tar.zst
+  IMAGE_BUILD_NAME: immortalwrt-imagebuilder-24.10.0-x86-64.tar.zst
   UPLOAD_RELEASE: true
-  DISPLAY_APT_LIST: false
   DELETE_USELESS_FILES: true
 
 jobs:
@@ -90,6 +82,7 @@ jobs:
         sudo -E apt-get -qq -y purge azure-cli* ghc* zulu* llvm* firefox google* powershell* openjdk* mysql* php* mongodb* dotnet* snap* postgresql* podman microsoft-edge-stable ruby* golang* java-common node* ubuntu-mono fonts-noto-mono mono* libmono* openjdk-11-jre-headless
         sudo -E apt-get -qq install ca-certificates curl gnupg
         sudo -E apt -y full-upgrade
+        sudo apt-get install -y -qq zstd patch
         sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.org/init_build_environment.sh)'
         sudo -E apt-get -qq -y install libfuse-dev
         sudo -E apt-get -qq -y clean
@@ -98,129 +91,54 @@ jobs:
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
 
-    - name: Clone source code
+    - name: Download ImageBuild
       working-directory: /workdir
       run: |
-        df -hT $PWD
-        git clone $REPO_URL -b $REPO_BRANCH --single-branch --filter=blob:none openwrt
-        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+        wget -O $IMAGE_BUILD_NAME -c $IMAGE_BUILD_URL || { echo "Download failed"; exit 1; }
+        mkdir -p imagebuilder
+        tar -I zstd -xvf $IMAGE_BUILD_NAME -C imagebuilder
+        rm -rf $IMAGE_BUILD_NAME
 
     - name: Setup upterm session
       uses: lhotari/action-upterm@v1
 
-    - name: Load custom feeds
+    - name: Apply config patch
+      working-directory: /workdir/imagebuilder
       run: |
-        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
-        chmod +x $DIY_P1_SH
-        cd openwrt
-        $GITHUB_WORKSPACE/$DIY_P1_SH
+        if [ -f .config ]; then
+          patch .config < $GITHUB_WORKSPACE/master.config.patch
+          grep "CONFIG_ISO_IMAGES" .config
+          grep "CONFIG_TARGET_KERNEL_PARTSIZE" .config
+        else
+          echo "No .config found"
+          exit 1
+        fi
 
-    - name: Update feeds
-      run: cd openwrt && ./scripts/feeds update -a
-
-    - name: Rm conflict feeds
-      run: |
-        chmod +x $DIY_RM_SH
-        cd openwrt
-        $GITHUB_WORKSPACE/$DIY_RM_SH
-
-    - name: Install feeds
-      run: cd openwrt && ./scripts/feeds install -a
-
-    - name: Load custom configuration
-      run: |
-        [ -e files ] && mv files openwrt/files
-        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-        chmod +x $DIY_P2_SH
-        cd openwrt
-        $GITHUB_WORKSPACE/$DIY_P2_SH
-
-    - name: Download package
-      id: package
-      run: |
-        cd openwrt
-        make defconfig
-        make download -j$(nproc)
-        find dl -size -1024c -exec ls -l {} \;
-        find dl -size -1024c -exec rm -f {} \;
-
-    - name: df
-      if: (!cancelled())
-      run: df -hT
-
-    - name: Display apt list
-      if: env.DISPLAY_APT_LIST == 'true' && !cancelled()
-      run: |
-        echo "======================="
-        echo "apt list:"
-        echo "======================="
-        apt list --installed
-        echo "======================="
-
-    - name: Compile the firmware
+    - name: ImageBuild the firmware
       id: compile
+      working-directory: /workdir/imagebuilder
       run: |
-        cd openwrt
-        echo -e "$(nproc) thread compile"
-        make -j$(nproc) V=s
+        PACKAGES=$(cat $GITHUB_WORKSPACE/master.packages.txt | tr '\n' ' ')
+        make image PROFILE="generic" PACKAGES="$PACKAGES" || { echo "Compile failed"; exit 1; }
         echo "status=success" >> $GITHUB_OUTPUT
-        grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
-        [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_OUTPUT
-        echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_OUTPUT
-
-    - name: Check space usage
-      if: (!cancelled())
-      run: df -hT
-
-    - name: Upload bin directory
-      uses: actions/upload-artifact@main
-      if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
-      with:
-        name: OpenWrt_bin${{ steps.compile.outputs.DEVICE_NAME }}${{ steps.compile.outputs.FILE_DATE }}
-        path: openwrt/bin
 
     - name: Organize files
       id: organize
+      working-directory: /workdir
       if: steps.compile.outputs.status == 'success' && !cancelled()
       run: |
-        cd openwrt/bin/targets/*/*
-        rm -rf packages
+        cd imagebuilder/bin/targets/x86/64/ || { echo "Directory not found"; exit 1; }
+        sha256sum *.img.gz > checksums.txt
         echo "firmware=$PWD" >> $GITHUB_OUTPUT
         echo "status=success" >> $GITHUB_OUTPUT
-
-    - name: Upload firmware directory
-      uses: actions/upload-artifact@main
-      if: steps.organize.outputs.status == 'success' && env.UPLOAD_FIRMWARE == 'true' && !cancelled()
-      with:
-        name: OpenWrt_firmware${{ steps.compile.outputs.DEVICE_NAME }}${{ steps.compile.outputs.FILE_DATE }}
-        path: ${{ steps.organize.outputs.firmware }}
-
-    - name: Upload firmware to cowtransfer
-      id: cowtransfer
-      if: steps.organize.outputs.status == 'success' && steps.compile.outputs.status == 'success' && env.UPLOAD_COWTRANSFER == 'true' && !cancelled()
-      run: |
-        curl -fsSL git.io/file-transfer | sh
-        ./transfer cow --block 2621440 -s -p 64 --no-progress ${FIRMWARE} 2>&1 | tee cowtransfer.log
-        echo "::warning file=cowtransfer.com::$(cat cowtransfer.log | grep https)"
-        echo "::set-output name=url::$(cat cowtransfer.log | grep https | cut -f3 -d" ")"
-
-    - name: Upload firmware to WeTransfer
-      id: wetransfer
-      if: steps.organize.outputs.status == 'success' && steps.compile.outputs.status == 'success' && env.UPLOAD_WETRANSFER == 'true' && !cancelled()
-      run: |
-        curl -fsSL git.io/file-transfer | sh
-        ./transfer wet -s -p 16 --no-progress ${FIRMWARE} 2>&1 | tee wetransfer.log
-        echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
-        echo "::set-output name=url::$(cat wetransfer.log | grep https | cut -f3 -d" ")"
 
     - name: Generate release tag
       id: tag
       if: env.UPLOAD_RELEASE == 'true' && steps.compile.outputs.status == 'success' && !cancelled()
       run: |
         echo "release_tag=immortalwrt-$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
-        touch release.txt
-        [ $UPLOAD_COWTRANSFER = true ] && echo "🔗 [Cowtransfer](${{ steps.cowtransfer.outputs.url }})" >> release.txt
-        [ $UPLOAD_WETRANSFER = true ] && echo "🔗 [WeTransfer](${{ steps.wetransfer.outputs.url }})" >> release.txt
+        echo "ImmortalWrt 24.10.0 x86_64 Master Build" > release.txt
+        cat imagebuilder/bin/targets/x86/64/checksums.txt >> release.txt
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: Upload firmware to release
