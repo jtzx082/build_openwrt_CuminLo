@@ -6,9 +6,10 @@
 #
 # https://github.com/P3TERX/Actions-OpenWrt
 # Description: Build OpenWrt using GitHub Actions
+# 使用编译的方式 - 暂时废弃
 #
 
-name: Immortalwrt OpenWrt x86_64 Build
+name: Immortalwrt Build OpenWrt x86_64
 
 on:
   repository_dispatch:
