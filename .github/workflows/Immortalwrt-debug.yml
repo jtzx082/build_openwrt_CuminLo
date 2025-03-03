@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: Immortalwrt OpenWrt x86_64 Build
+name: Immortalwrt-debug
 
 on:
   repository_dispatch:
@@ -104,6 +104,9 @@ jobs:
         df -hT $PWD
         git clone $REPO_URL -b $REPO_BRANCH --single-branch --filter=blob:none openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+
+    - name: Setup upterm session
+      uses: lhotari/action-upterm@v1
 
     - name: Load custom feeds
       run: |
