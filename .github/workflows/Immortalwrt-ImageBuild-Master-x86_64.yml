@@ -81,6 +81,7 @@ jobs:
         sudo -E apt-get -qq -y purge azure-cli* ghc* zulu* llvm* firefox google* powershell* openjdk* mysql* php* mongodb* dotnet* snap* postgresql* podman microsoft-edge-stable ruby* golang* java-common node* ubuntu-mono fonts-noto-mono mono* libmono* openjdk-11-jre-headless
         sudo -E apt-get -qq install ca-certificates curl gnupg
         sudo -E apt -y full-upgrade
+        sudo apt-get install -y -qq zstd patch
         sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.org/init_build_environment.sh)'
         sudo -E apt-get -qq -y install libfuse-dev
         sudo -E apt-get -qq -y clean
@@ -93,8 +94,21 @@ jobs:
       working-directory: /workdir
       run: |
         wget -O immortalwrt-imagebuilder-24.10.0-x86-64.tar.zst -c $IMAGE_BUILD_URL || { echo "Download failed"; exit 1; }
+        mkdir -p imagebuilder
         tar -I zstd -xvf immortalwrt-imagebuilder-24.10.0-x86-64.tar.zst -C imagebuilder
         rm -rf immortalwrt-imagebuilder-24.10.0-x86-64.tar.zst
+
+    - name: Apply config patch
+      working-directory: /workdir/imagebuilder
+      run: |
+        if [ -f .config ]; then
+          patch .config < $GITHUB_WORKSPACE/config.patch
+          grep "CONFIG_ISO_IMAGES" .config
+          grep "CONFIG_TARGET_KERNEL_PARTSIZE" .config
+        else
+          echo "No .config found"
+          exit 1
+        fi
 
     - name: ImageBuild the firmware
       id: compile
@@ -109,6 +123,7 @@ jobs:
 
     - name: Organize files
       id: organize
+      working-directory: /workdir
       if: steps.compile.outputs.status == 'success' && !cancelled()
       run: |
         cd imagebuilder/bin/targets/x86/64/ || { echo "Directory not found"; exit 1; }
