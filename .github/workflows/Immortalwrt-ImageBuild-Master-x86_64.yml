@@ -88,22 +88,20 @@ jobs:
         sudo -E apt-get -qq -y clean
         sudo -E apt-get -qq -y autoclean
         sudo -E timedatectl set-timezone "Asia/Shanghai"
-        sudo mkdir -p /workdir
-        sudo chown $USER:$GROUPS /workdir
 
     - name: Download ImageBuild
-      working-directory: /workdir
       run: |
         wget -O $IMAGE_BUILD_NAME -c $IMAGE_BUILD_URL || { echo "Download failed"; exit 1; }
-        mkdir -p imagebuilder
-        tar -I zstd -xvf $IMAGE_BUILD_NAME -C imagebuilder
+        mkdir -p $GITHUB_WORKSPACE/imagebuilder
+        tar -I zstd -xvf $IMAGE_BUILD_NAME -C $GITHUB_WORKSPACE/imagebuilder --strip-components=1
         rm -rf $IMAGE_BUILD_NAME
 
     - name: Apply config patch
-      working-directory: /workdir/imagebuilder
+      working-directory: $GITHUB_WORKSPACE/imagebuilder
       run: |
         if [ -f .config ]; then
-          patch .config < $GITHUB_WORKSPACE/master.config.patch
+          patch .config < $GITHUB_WORKSPACE/master.config.patch || { echo "Patch failed"; exit 1; }
+          echo "Patch applied successfully"
           grep "CONFIG_ISO_IMAGES" .config
           grep "CONFIG_TARGET_KERNEL_PARTSIZE" .config
         else
@@ -113,7 +111,7 @@ jobs:
 
     - name: ImageBuild the firmware
       id: compile
-      working-directory: /workdir/imagebuilder
+      working-directory: $GITHUB_WORKSPACE/imagebuilder
       run: |
         PACKAGES=$(cat $GITHUB_WORKSPACE/master.packages.txt | tr '\n' ' ')
         make image PROFILE="generic" PACKAGES="$PACKAGES" || { echo "Compile failed"; exit 1; }
@@ -121,7 +119,7 @@ jobs:
 
     - name: Organize files
       id: organize
-      working-directory: /workdir
+      working-directory: $GITHUB_WORKSPACE
       if: steps.compile.outputs.status == 'success' && !cancelled()
       run: |
         cd imagebuilder/bin/targets/x86/64/ || { echo "Directory not found"; exit 1; }
