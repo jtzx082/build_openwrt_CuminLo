@@ -23,7 +23,7 @@ on:
 
 env:
   IMAGE_BUILD_URL: https://downloads.immortalwrt.org/releases/24.10.0/targets/x86/64/immortalwrt-imagebuilder-24.10.0-x86-64.Linux-x86_64.tar.zst
-  IMAGE_BUILD_NAME: immortalwrt-imagebuilder-24.10.0-x86-64.tar.zst
+  IMAGE_BUILD_NAME: immortalwrt-imagebuilder-24.10.0-x86-64.Linux-x86_64.tar.zst
   UPLOAD_RELEASE: true
   DELETE_USELESS_FILES: true
 
@@ -93,11 +93,11 @@ jobs:
       run: |
         wget -O $IMAGE_BUILD_NAME -c $IMAGE_BUILD_URL || { echo "Download failed"; exit 1; }
         mkdir -p $GITHUB_WORKSPACE/imagebuilder
-        tar -I zstd -xvf $IMAGE_BUILD_NAME -C $GITHUB_WORKSPACE/imagebuilder --strip-components=1
+        tar -I zstd -xf $IMAGE_BUILD_NAME -C $GITHUB_WORKSPACE/imagebuilder --strip-components=1
         rm -rf $IMAGE_BUILD_NAME
 
     - name: Apply config patch
-      working-directory: $GITHUB_WORKSPACE/imagebuilder
+      working-directory: ${{ env.GITHUB_WORKSPACE }}/imagebuilder
       run: |
         if [ -f .config ]; then
           patch .config < $GITHUB_WORKSPACE/master.config.patch || { echo "Patch failed"; exit 1; }
@@ -111,7 +111,7 @@ jobs:
 
     - name: ImageBuild the firmware
       id: compile
-      working-directory: $GITHUB_WORKSPACE/imagebuilder
+      working-directory: ${{ env.GITHUB_WORKSPACE }}/imagebuilder
       run: |
         PACKAGES=$(cat $GITHUB_WORKSPACE/master.packages.txt | tr '\n' ' ')
         make image PROFILE="generic" PACKAGES="$PACKAGES" || { echo "Compile failed"; exit 1; }
@@ -119,7 +119,7 @@ jobs:
 
     - name: Organize files
       id: organize
-      working-directory: $GITHUB_WORKSPACE
+      working-directory: ${{ env.GITHUB_WORKSPACE }}
       if: steps.compile.outputs.status == 'success' && !cancelled()
       run: |
         cd imagebuilder/bin/targets/x86/64/ || { echo "Directory not found"; exit 1; }
