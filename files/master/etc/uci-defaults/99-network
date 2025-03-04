@@ -6,6 +6,11 @@ set network.lan.ip6assign='64'
 set network.lan.ip6ifaceid='eui64'
 del network.globals.ula_prefix
 
+uci set network.wan.proto='pppoe'
+uci set network.wan.ipv6='auto'
+uci set network.wan.username='xxooooxx@163.gd'
+uci set network.wan.password='xxooooxx'
+
 set network.MODEM=interface
 set network.MODEM.proto='static'
 set network.MODEM.device='eth1'
@@ -21,24 +26,24 @@ set network.WG.listen_port='51820'
 set network.WG.addresses='192.168.10.1'
 set network.WG.ip6assign='64'
 set network.WG.ip6ifaceid='eui64'
-set network.@wireguard_WG[0]=wireguard_WG
-set network.@wireguard_WG[0].description='OnePlus9Pro'
-set network.@wireguard_WG[0].public_key='ykHILC5XAnQ58C/VngbseQ5diPRR/SqJbDiTJdDZeQY='
-set network.@wireguard_WG[0].private_key='QPkNPP3xOsPacngaz+641zozsOhl9pVB16tdseHswn8='
-set network.@wireguard_WG[0].preshared_key='BKPXV4p3JrFaU8zKpQ8kreHLLNECjRMp6tpMGRuyDyI='
-set network.@wireguard_WG[0].allowed_ips='192.168.10.39'
-set network.@wireguard_WG[0].route_allowed_ips='1'
-set network.@wireguard_WG[0].persistent_keepalive='25'
-set network.@wireguard_WG[0].endpoint_host='wg.top'
-set network.@wireguard_WG[1]=wireguard_WG
-set network.@wireguard_WG[1].description='macOS'
-set network.@wireguard_WG[1].public_key='7TK9fBBcOlKHKQUnZx/SIWCon0k7C6SpJUovlJScq3Y='
-set network.@wireguard_WG[1].private_key='KI3xpzS4+5qzGlH9elu/Y41ag4sq28BxhNlWNo27GU0='
-set network.@wireguard_WG[1].preshared_key='pnj7mIJPqt8+5LVNIsVNrjFIcpnWYDbzTJBYwCRkmIQ='
-set network.@wireguard_WG[1].route_allowed_ips='1'
-set network.@wireguard_WG[1].endpoint_host='wg.top'
-set network.@wireguard_WG[1].persistent_keepalive='25'
-set network.@wireguard_WG[1].allowed_ips='192.168.10.10'
+add network wireguard_WG
+set network.@wireguard_WG[-1].description='OnePlus9Pro'
+set network.@wireguard_WG[-1].public_key='ykHILC5XAnQ58C/VngbseQ5diPRR/SqJbDiTJdDZeQY='
+set network.@wireguard_WG[-1].private_key='QPkNPP3xOsPacngaz+641zozsOhl9pVB16tdseHswn8='
+set network.@wireguard_WG[-1].preshared_key='BKPXV4p3JrFaU8zKpQ8kreHLLNECjRMp6tpMGRuyDyI='
+set network.@wireguard_WG[-1].allowed_ips='192.168.10.39'
+set network.@wireguard_WG[-1].route_allowed_ips='1'
+set network.@wireguard_WG[-1].persistent_keepalive='25'
+set network.@wireguard_WG[-1].endpoint_host='wg.top'
+add network wireguard_WG
+set network.@wireguard_WG[-1].description='macOS'
+set network.@wireguard_WG[-1].public_key='7TK9fBBcOlKHKQUnZx/SIWCon0k7C6SpJUovlJScq3Y='
+set network.@wireguard_WG[-1].private_key='KI3xpzS4+5qzGlH9elu/Y41ag4sq28BxhNlWNo27GU0='
+set network.@wireguard_WG[-1].preshared_key='pnj7mIJPqt8+5LVNIsVNrjFIcpnWYDbzTJBYwCRkmIQ='
+set network.@wireguard_WG[-1].allowed_ips='192.168.10.10'
+set network.@wireguard_WG[-1].route_allowed_ips='1'
+set network.@wireguard_WG[-1].persistent_keepalive='25'
+set network.@wireguard_WG[-1].endpoint_host='wg.top'
 
 commit
 EOF
