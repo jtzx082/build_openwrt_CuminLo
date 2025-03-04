@@ -131,8 +131,8 @@ jobs:
       id: tag
       if: env.UPLOAD_RELEASE == 'true' && steps.compile.outputs.status == 'success' && !cancelled()
       run: |
-        echo "release_tag=immortalwrt-$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
-        echo "ImmortalWrt 24.10.0 x86_64 Master Build" > release.txt
+        echo "release_tag=ImmortalWrt-Master-$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
+        echo "ImmortalWrt Master Build" > release.txt
         cat imagebuilder/bin/targets/x86/64/checksums.txt >> release.txt
         echo "status=success" >> $GITHUB_OUTPUT
 
