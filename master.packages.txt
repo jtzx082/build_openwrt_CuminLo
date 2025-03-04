@@ -123,7 +123,6 @@ luci-i18n-dawn-zh-cn
 luci-i18n-ddns-go-zh-cn
 luci-i18n-diskman-zh-cn
 luci-i18n-filemanager-zh-cn
-luci-i18n-socat-zh-cn
 luci-i18n-ttyd-zh-cn
 luci-i18n-upnp-zh-cn
 luci-i18n-wol-zh-cn
