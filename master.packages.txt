@@ -119,7 +119,6 @@ libqrencode
 luci-i18n-package-manager-zh-cn
 luci-i18n-zerotier-zh-cn
 luci-i18n-airplay2-zh-cn
-luci-i18n-dawn-zh-cn
 luci-i18n-ddns-go-zh-cn
 luci-i18n-diskman-zh-cn
 luci-i18n-filemanager-zh-cn

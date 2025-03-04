@@ -1,0 +1,12 @@
+uci batch << EOF
+
+add firewall redirect
+set firewall.@redirect[-1].target='DNAT'
+set firewall.@redirect[-1].name='Hijack DNS'
+set firewall.@redirect[-1].family='any'
+set firewall.@redirect[-1].src='lan'
+set firewall.@redirect[-1].src_dport='53'
+set firewall.@redirect[-1].dest_port='5553'
+
+commit
+EOF
