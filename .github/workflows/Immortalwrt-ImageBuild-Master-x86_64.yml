@@ -101,7 +101,7 @@ jobs:
       run: |
         wget -O $GITHUB_WORKSPACE/imagebuilder/nikki.tar.gz -c $NIKKI_DOWNLOAD_URL || { echo "Nikki Download failed"; exit 1; }
         mkdir -p $GITHUB_WORKSPACE/nikki
-        tar -xz $GITHUB_WORKSPACE/imagebuilder/nikki.tar.gz -C $GITHUB_WORKSPACE/nikki
+        tar -xzf $GITHUB_WORKSPACE/imagebuilder/nikki.tar.gz -C $GITHUB_WORKSPACE/nikki
         rm -rf $GITHUB_WORKSPACE/imagebuilder/nikki.tar.gz
         ls -al $GITHUB_WORKSPACE/nikki
         cp $GITHUB_WORKSPACE/nikki/*.ipk $GITHUB_WORKSPACE/imagebuilder/packages/
@@ -125,7 +125,7 @@ jobs:
       run: |
         PACKAGES=$(cat $GITHUB_WORKSPACE/master.packages.txt | tr '\n' ' ')
         cd imagebuilder
-        make image PROFILE="generic" PACKAGES="$PACKAGES" || { echo "Compile failed"; exit 1; }
+        make image PROFILE="generic" PACKAGES="$PACKAGES" FILES="$GITHUB_WORKSPACE/files/master" || { echo "Compile failed"; exit 1; }
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: Organize files

@@ -1,0 +1,6 @@
+uci batch << EOF
+
+set network.lan.ipaddr='10.0.50.2'
+
+commit
+EOF
