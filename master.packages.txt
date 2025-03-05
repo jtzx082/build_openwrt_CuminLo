@@ -135,3 +135,5 @@ luci-i18n-nlbwmon-zh-cn
 nikki
 luci-app-nikki
 luci-i18n-nikki-zh-cn
+luci-i18n-netspeedtest-zh-cn
+luci-i18n-ddns-go-zh-cn

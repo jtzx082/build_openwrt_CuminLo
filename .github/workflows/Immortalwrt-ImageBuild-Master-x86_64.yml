@@ -120,10 +120,8 @@ jobs:
         make package/ddns-go/luci-app-ddns-go/compile V=s
         make package/nikki/luci-app-nikki/compile V=s
         echo '============1============='
-        ls -al $GITHUB_WORKSPACE/sdk/bin/packages/x86_64/packages
+        ls -al $GITHUB_WORKSPACE/sdk/bin/packages/x86_64/base/
         echo '============2============='
-        ls -al $GITHUB_WORKSPACE/sdk/bin/targets/x86/64/packages
-        echo '============END============='
 
     # - name: Copy Nikki Package
     #   run: |
@@ -135,75 +133,75 @@ jobs:
     #     cp $GITHUB_WORKSPACE/nikki/*.ipk $GITHUB_WORKSPACE/imagebuilder/packages/
     #     cd $GITHUB_WORKSPACE/imagebuilder && pwd && ls -al && cd $GITHUB_WORKSPACE/imagebuilder/packages && ls -al
 
-    # - name: Download ImageBuild
-    #   run: |
-    #     wget -O $IMAGE_BUILD_NAME -c $IMAGE_BUILD_URL || { echo "Download failed"; exit 1; }
-    #     mkdir -p $GITHUB_WORKSPACE/imagebuilder
-    #     tar -I zstd -xf $IMAGE_BUILD_NAME -C $GITHUB_WORKSPACE/imagebuilder --strip-components=1
-    #     rm -rf $IMAGE_BUILD_NAME
+    - name: Download ImageBuild
+      run: |
+        wget -O $IMAGE_BUILD_NAME -c $IMAGE_BUILD_URL || { echo "Download failed"; exit 1; }
+        mkdir -p $GITHUB_WORKSPACE/imagebuilder
+        tar -I zstd -xf $IMAGE_BUILD_NAME -C $GITHUB_WORKSPACE/imagebuilder --strip-components=1
+        rm -rf $IMAGE_BUILD_NAME
 
-    # - name: Apply config patch
-    #   run: |
-    #     cd $GITHUB_WORKSPACE/imagebuilder && ls -al
-    #     if [ -f .config ]; then
-    #       patch .config < $GITHUB_WORKSPACE/master.config.patch || { echo "Patch failed"; exit 1; }
-    #       echo "Patch applied successfully"
-    #       grep "CONFIG_ISO_IMAGES" .config
-    #       grep "CONFIG_TARGET_KERNEL_PARTSIZE" .config
-    #     else
-    #       echo "No .config found"
-    #       exit 1
-    #     fi
+    - name: Apply config patch
+      run: |
+        cd $GITHUB_WORKSPACE/imagebuilder && ls -al
+        if [ -f .config ]; then
+          patch .config < $GITHUB_WORKSPACE/master.config.patch || { echo "Patch failed"; exit 1; }
+          echo "Patch applied successfully"
+          grep "CONFIG_ISO_IMAGES" .config
+          grep "CONFIG_TARGET_KERNEL_PARTSIZE" .config
+        else
+          echo "No .config found"
+          exit 1
+        fi
 
-    # - name: Build the firmware
-    #   id: compile
-    #   run: |
-    #     cp $GITHUB_WORKSPACE/sdk/bin/targets/x86/64/*.ipk $GITHUB_WORKSPACE/imagebuilder/packages/
-    #     PACKAGES=$(cat $GITHUB_WORKSPACE/master.packages.txt | tr '\n' ' ')
-    #     cd $GITHUB_WORKSPACE/imagebuilder
-    #     make image PROFILE="generic" PACKAGES="$PACKAGES" FILES="$GITHUB_WORKSPACE/files/master" || { echo "Compile failed"; exit 1; }
-    #     echo "status=success" >> $GITHUB_OUTPUT
+    - name: Build the firmware
+      id: compile
+      run: |
+        cp $GITHUB_WORKSPACE/sdk/bin/packages/x86_64/base/*.ipk $GITHUB_WORKSPACE/imagebuilder/packages/
+        PACKAGES=$(cat $GITHUB_WORKSPACE/master.packages.txt | tr '\n' ' ')
+        cd $GITHUB_WORKSPACE/imagebuilder
+        make image PROFILE="generic" PACKAGES="$PACKAGES" FILES="$GITHUB_WORKSPACE/files/master" || { echo "Compile failed"; exit 1; }
+        echo "status=success" >> $GITHUB_OUTPUT
 
-    # - name: Organize files
-    #   id: organize
-    #   if: steps.compile.outputs.status == 'success' && !cancelled()
-    #   run: |
-    #     cd imagebuilder/bin/targets/x86/64/ || { echo "Directory not found"; exit 1; }
-    #     sha256sum *.img.gz > checksums.txt
-    #     echo "firmware=$PWD" >> $GITHUB_OUTPUT
-    #     echo "status=success" >> $GITHUB_OUTPUT
+    - name: Organize files
+      id: organize
+      if: steps.compile.outputs.status == 'success' && !cancelled()
+      run: |
+        cd imagebuilder/bin/targets/x86/64/ || { echo "Directory not found"; exit 1; }
+        sha256sum *.img.gz > checksums.txt
+        echo "firmware=$PWD" >> $GITHUB_OUTPUT
+        echo "status=success" >> $GITHUB_OUTPUT
 
-    # - name: Generate release tag
-    #   id: tag
-    #   if: env.UPLOAD_RELEASE == 'true' && steps.compile.outputs.status == 'success' && !cancelled()
-    #   run: |
-    #     echo "release_tag=ImmortalWrt-Master-$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
-    #     echo "ImmortalWrt Master Build" > release.txt
-    #     cat imagebuilder/bin/targets/x86/64/checksums.txt >> release.txt
-    #     echo "status=success" >> $GITHUB_OUTPUT
+    - name: Generate release tag
+      id: tag
+      if: env.UPLOAD_RELEASE == 'true' && steps.compile.outputs.status == 'success' && !cancelled()
+      run: |
+        echo "release_tag=ImmortalWrt-Master-$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
+        echo "ImmortalWrt Master Build" > release.txt
+        cat imagebuilder/bin/targets/x86/64/checksums.txt >> release.txt
+        echo "status=success" >> $GITHUB_OUTPUT
 
-    # - name: Upload firmware to release
-    #   uses: softprops/action-gh-release@v2
-    #   if: env.UPLOAD_RELEASE == 'true' && steps.tag.outputs.status == 'success' && steps.compile.outputs.status == 'success' && !cancelled()
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #   with:
-    #     tag_name: ${{ steps.tag.outputs.release_tag }}
-    #     body_path: release.txt
-    #     files: ${{ steps.organize.outputs.firmware }}/*
+    - name: Upload firmware to release
+      uses: softprops/action-gh-release@v2
+      if: env.UPLOAD_RELEASE == 'true' && steps.tag.outputs.status == 'success' && steps.compile.outputs.status == 'success' && !cancelled()
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.tag.outputs.release_tag }}
+        body_path: release.txt
+        files: ${{ steps.organize.outputs.firmware }}/*
 
-    # - name: Delete workflow runs
-    #   if: steps.compile.outputs.status == 'success' && !cancelled()
-    #   uses: Mattraks/delete-workflow-runs@v2
-    #   with:
-    #     retain_days: 1
-    #     keep_minimum_runs: 3
+    - name: Delete workflow runs
+      if: steps.compile.outputs.status == 'success' && !cancelled()
+      uses: Mattraks/delete-workflow-runs@v2
+      with:
+        retain_days: 1
+        keep_minimum_runs: 3
 
-    # - name: Delete Older Releases
-    #   uses: dev-drprasad/delete-older-releases@v0.3.4
-    #   if: env.UPLOAD_RELEASE == 'true' && !cancelled()
-    #   with:
-    #     keep_latest: 5
-    #     delete_tags: true
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Delete Older Releases
+      uses: dev-drprasad/delete-older-releases@v0.3.4
+      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+      with:
+        keep_latest: 5
+        delete_tags: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
