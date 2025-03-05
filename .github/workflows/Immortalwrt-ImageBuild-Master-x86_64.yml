@@ -112,16 +112,18 @@ jobs:
     - name: Setup upterm session
       if: env.IS_SSH_DEBUG == 'true'
       uses: lhotari/action-upterm@v1
-
+    
     - name: Build SDK Package
       run: |
         cd $GITHUB_WORKSPACE/sdk && ls -al
-        make package/netspeedtest/luci-app-netspeedtest/compile V=s
-        make package/ddns-go/luci-app-ddns-go/compile V=s
-        make package/nikki/luci-app-nikki/compile V=s
+        make -j$(nproc) package/netspeedtest/luci-app-netspeedtest/compile \
+          package/ddns-go/luci-app-ddns-go/compile \
+          package/nikki/luci-app-nikki/compile V=s || { echo "Compile failed"; exit 1; }
         echo '============1============='
         ls -al $GITHUB_WORKSPACE/sdk/bin/packages/x86_64/base/
         echo '============2============='
+        ls -al $GITHUB_WORKSPACE/sdk/bin/packages/x86_64/*/
+        echo '============3============='
 
     # - name: Copy Nikki Package
     #   run: |
