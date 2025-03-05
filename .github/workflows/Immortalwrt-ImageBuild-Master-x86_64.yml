@@ -23,8 +23,10 @@ on:
 
 env:
   IMAGE_BUILD_URL: https://downloads.immortalwrt.org/releases/24.10.0/targets/x86/64/immortalwrt-imagebuilder-24.10.0-x86-64.Linux-x86_64.tar.zst
+  SDK_URL: https://downloads.immortalwrt.org/releases/24.10.0/targets/x86/64/immortalwrt-sdk-24.10.0-x86-64_gcc-13.3.0_musl.Linux-x86_64.tar.zst
   NIKKI_DOWNLOAD_URL: https://github.com/nikkinikki-org/OpenWrt-nikki/releases/download/v1.20.1/nikki_x86_64-openwrt-24.10.tar.gz
   IMAGE_BUILD_NAME: immortalwrt-imagebuilder-24.10.0-x86-64.Linux-x86_64.tar.zst
+  LAN_IP: 192.168.51.1
   UPLOAD_RELEASE: true
   DELETE_USELESS_FILES: true
 
@@ -72,7 +74,7 @@ jobs:
         npm_clean: "True"
         os_swap: "True"
 
-    - name: Initialization environment
+    - name: Initialization System environment
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
@@ -83,12 +85,29 @@ jobs:
         sudo -E apt-get -qq -y purge azure-cli* ghc* zulu* llvm* firefox google* powershell* openjdk* mysql* php* mongodb* dotnet* snap* postgresql* podman microsoft-edge-stable ruby* golang* java-common node* ubuntu-mono fonts-noto-mono mono* libmono* openjdk-11-jre-headless
         sudo -E apt-get -qq install ca-certificates curl gnupg
         sudo -E apt -y full-upgrade
-        sudo apt-get install -y -qq zstd patch
+        sudo apt-get install -y -qq zstd patch tree
         sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.org/init_build_environment.sh)'
         sudo -E apt-get -qq -y install libfuse-dev
         sudo -E apt-get -qq -y clean
         sudo -E apt-get -qq -y autoclean
         sudo -E timedatectl set-timezone "Asia/Shanghai"
+
+    - name: Initialization OpenWrt SDK
+      run: |
+        wget -O immortalwrt-sdk.tar.zst -c $SDK_URL || { echo "Download failed"; exit 1; }
+        mkdir -p $GITHUB_WORKSPACE/sdk
+        tar -I zstd -xf immortalwrt-sdk.tar.zst -C $GITHUB_WORKSPACE/sdk --strip-components=1
+        rm -rf immortalwrt-sdk.tar.zst
+        cd $GITHUB_WORKSPACE/sdk && ls -al
+        git clone https://github.com/sirpdboy/netspeedtest.git package/netspeedtest
+        git clone https://github.com/sirpdboy/luci-app-ddns-go.git package/ddns-go
+        git clone https://github.com/nikkinikki-org/OpenWrt-nikki package/nikki
+        ./scripts/feeds update -a
+        ./scripts/feeds install -a
+        make package/netspeedtest/luci-app-netspeedtest/compile V=s
+        make package/ddns-go/luci-app-ddns-go/compile V=s
+        make package/nikki/luci-app-nikki/compile V=s
+        tree -d
 
     - name: Download ImageBuild
       run: |
@@ -97,15 +116,15 @@ jobs:
         tar -I zstd -xf $IMAGE_BUILD_NAME -C $GITHUB_WORKSPACE/imagebuilder --strip-components=1
         rm -rf $IMAGE_BUILD_NAME
 
-    - name: Copy Nikki Package
-      run: |
-        wget -O $GITHUB_WORKSPACE/imagebuilder/nikki.tar.gz -c $NIKKI_DOWNLOAD_URL || { echo "Nikki Download failed"; exit 1; }
-        mkdir -p $GITHUB_WORKSPACE/nikki
-        tar -xzf $GITHUB_WORKSPACE/imagebuilder/nikki.tar.gz -C $GITHUB_WORKSPACE/nikki
-        rm -rf $GITHUB_WORKSPACE/imagebuilder/nikki.tar.gz
-        ls -al $GITHUB_WORKSPACE/nikki
-        cp $GITHUB_WORKSPACE/nikki/*.ipk $GITHUB_WORKSPACE/imagebuilder/packages/
-        cd $GITHUB_WORKSPACE/imagebuilder && pwd && ls -al && cd $GITHUB_WORKSPACE/imagebuilder/packages && ls -al
+    # - name: Copy Nikki Package
+    #   run: |
+    #     wget -O $GITHUB_WORKSPACE/imagebuilder/nikki.tar.gz -c $NIKKI_DOWNLOAD_URL || { echo "Nikki Download failed"; exit 1; }
+    #     mkdir -p $GITHUB_WORKSPACE/nikki
+    #     tar -xzf $GITHUB_WORKSPACE/imagebuilder/nikki.tar.gz -C $GITHUB_WORKSPACE/nikki
+    #     rm -rf $GITHUB_WORKSPACE/imagebuilder/nikki.tar.gz
+    #     ls -al $GITHUB_WORKSPACE/nikki
+    #     cp $GITHUB_WORKSPACE/nikki/*.ipk $GITHUB_WORKSPACE/imagebuilder/packages/
+    #     cd $GITHUB_WORKSPACE/imagebuilder && pwd && ls -al && cd $GITHUB_WORKSPACE/imagebuilder/packages && ls -al
 
     - name: Apply config patch
       run: |
@@ -123,8 +142,9 @@ jobs:
     - name: ImageBuild the firmware
       id: compile
       run: |
+        cp $GITHUB_WORKSPACE/sdk/bin/targets/x86/64/*.ipk $GITHUB_WORKSPACE/imagebuilder/packages/
         PACKAGES=$(cat $GITHUB_WORKSPACE/master.packages.txt | tr '\n' ' ')
-        cd imagebuilder
+        cd $GITHUB_WORKSPACE/imagebuilder
         make image PROFILE="generic" PACKAGES="$PACKAGES" FILES="$GITHUB_WORKSPACE/files/master" || { echo "Compile failed"; exit 1; }
         echo "status=success" >> $GITHUB_OUTPUT
 

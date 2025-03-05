@@ -1,0 +1,7 @@
+uci batch << EOF
+
+set cloudflared.config.enabled='1'
+set cloudflared.config.token='xxoo'
+
+commit
+EOF
