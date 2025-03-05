@@ -1,15 +1,16 @@
 uci batch << EOF
 
-set network.lan.ipaddr='$LAN_IP'
+del network.globals.ula_prefix
+
+set network.lan.ipaddr='$NETWORK_LAN_IP'
 set network.lan.netmask='255.255.254.0'
 set network.lan.ip6assign='64'
 set network.lan.ip6ifaceid='eui64'
-del network.globals.ula_prefix
 
 uci set network.wan.proto='pppoe'
 uci set network.wan.ipv6='auto'
-uci set network.wan.username='xxooooxx@163.gd'
-uci set network.wan.password='xxooooxx'
+uci set network.wan.username='$NETWORK_WAN_USERNAME'
+uci set network.wan.password='$NETWORK_WAN_PASSWORD'
 
 set network.MODEM=interface
 set network.MODEM.proto='static'
@@ -30,20 +31,20 @@ add network wireguard_WG
 set network.@wireguard_WG[-1].description='OnePlus9Pro'
 set network.@wireguard_WG[-1].public_key='ykHILC5XAnQ58C/VngbseQ5diPRR/SqJbDiTJdDZeQY='
 set network.@wireguard_WG[-1].private_key='QPkNPP3xOsPacngaz+641zozsOhl9pVB16tdseHswn8='
-set network.@wireguard_WG[-1].preshared_key='BKPXV4p3JrFaU8zKpQ8kreHLLNECjRMp6tpMGRuyDyI='
+set network.@wireguard_WG[-1].preshared_key='$NETWORK_WG_PRESHARED_KEY_ONEPLUS'
 set network.@wireguard_WG[-1].allowed_ips='192.168.10.39'
 set network.@wireguard_WG[-1].route_allowed_ips='1'
 set network.@wireguard_WG[-1].persistent_keepalive='25'
-set network.@wireguard_WG[-1].endpoint_host='wg.top'
+set network.@wireguard_WG[-1].endpoint_host='$NETWORK_WG_ENDPOINT_HOST'
 add network wireguard_WG
 set network.@wireguard_WG[-1].description='macOS'
 set network.@wireguard_WG[-1].public_key='7TK9fBBcOlKHKQUnZx/SIWCon0k7C6SpJUovlJScq3Y='
 set network.@wireguard_WG[-1].private_key='KI3xpzS4+5qzGlH9elu/Y41ag4sq28BxhNlWNo27GU0='
-set network.@wireguard_WG[-1].preshared_key='pnj7mIJPqt8+5LVNIsVNrjFIcpnWYDbzTJBYwCRkmIQ='
+set network.@wireguard_WG[-1].preshared_key='$NETWORK_WG_PRESHARED_KEY_MAC_AIR'
 set network.@wireguard_WG[-1].allowed_ips='192.168.10.10'
 set network.@wireguard_WG[-1].route_allowed_ips='1'
 set network.@wireguard_WG[-1].persistent_keepalive='25'
-set network.@wireguard_WG[-1].endpoint_host='wg.top'
+set network.@wireguard_WG[-1].endpoint_host='$NETWORK_WG_ENDPOINT_HOST_V4'
 
 commit
 EOF

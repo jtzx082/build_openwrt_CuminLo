@@ -1,7 +1,7 @@
 uci batch << EOF
 
 set cloudflared.config.enabled='1'
-set cloudflared.config.token='xxoo'
+set cloudflared.config.token='$CLOUDFLARED_TUNNEL_TOKEN'
 
 commit
 EOF

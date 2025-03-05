@@ -2,7 +2,7 @@ uci batch << EOF
 
 set zerotier.sample_config.enabled='1'
 del zerotier.sample_config.join
-add_list zerotier.sample_config.join='565799d8f6097a5f'
+add_list zerotier.sample_config.join='$ZEROTIER_ID'
 set zerotier.sample_config.nat='0'
 
 commit
