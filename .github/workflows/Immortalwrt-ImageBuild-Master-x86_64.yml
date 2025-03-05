@@ -27,7 +27,7 @@ env:
   NIKKI_DOWNLOAD_URL: https://github.com/nikkinikki-org/OpenWrt-nikki/releases/download/v1.20.1/nikki_x86_64-openwrt-24.10.tar.gz
   IMAGE_BUILD_NAME: immortalwrt-imagebuilder-24.10.0-x86-64.Linux-x86_64.tar.zst
   LAN_IP: 192.168.51.1
-  IS_SSH_DEBUG: true
+  IS_SSH_DEBUG: false
   UPLOAD_RELEASE: true
   DELETE_USELESS_FILES: true
 
@@ -105,6 +105,7 @@ jobs:
         git clone https://github.com/nikkinikki-org/OpenWrt-nikki package/nikki
         ./scripts/feeds update -a
         ./scripts/feeds install -a
+        make defconfig
         ls -al package/netspeedtest
         ls -al package/ddns-go
         ls -al package/nikki
@@ -115,18 +116,11 @@ jobs:
 
     - name: Build SDK Package
       run: |
-       cd $GITHUB_WORKSPACE/sdk && ls -al
+        cd $GITHUB_WORKSPACE/sdk && ls -al
         make package/netspeedtest/luci-app-netspeedtest/compile V=s
         make package/ddns-go/luci-app-ddns-go/compile V=s
         make package/nikki/luci-app-nikki/compile V=s
-        tree -d
-
-    - name: Download ImageBuild
-      run: |
-        wget -O $IMAGE_BUILD_NAME -c $IMAGE_BUILD_URL || { echo "Download failed"; exit 1; }
-        mkdir -p $GITHUB_WORKSPACE/imagebuilder
-        tar -I zstd -xf $IMAGE_BUILD_NAME -C $GITHUB_WORKSPACE/imagebuilder --strip-components=1
-        rm -rf $IMAGE_BUILD_NAME
+        ls -al $GITHUB_WORKSPACE/sdk/bin/targets/x86/64/
 
     # - name: Copy Nikki Package
     #   run: |
@@ -137,6 +131,13 @@ jobs:
     #     ls -al $GITHUB_WORKSPACE/nikki
     #     cp $GITHUB_WORKSPACE/nikki/*.ipk $GITHUB_WORKSPACE/imagebuilder/packages/
     #     cd $GITHUB_WORKSPACE/imagebuilder && pwd && ls -al && cd $GITHUB_WORKSPACE/imagebuilder/packages && ls -al
+
+    - name: Download ImageBuild
+      run: |
+        wget -O $IMAGE_BUILD_NAME -c $IMAGE_BUILD_URL || { echo "Download failed"; exit 1; }
+        mkdir -p $GITHUB_WORKSPACE/imagebuilder
+        tar -I zstd -xf $IMAGE_BUILD_NAME -C $GITHUB_WORKSPACE/imagebuilder --strip-components=1
+        rm -rf $IMAGE_BUILD_NAME
 
     - name: Apply config patch
       run: |
@@ -151,7 +152,7 @@ jobs:
           exit 1
         fi
 
-    - name: ImageBuild the firmware
+    - name: Build the firmware
       id: compile
       run: |
         cp $GITHUB_WORKSPACE/sdk/bin/targets/x86/64/*.ipk $GITHUB_WORKSPACE/imagebuilder/packages/
