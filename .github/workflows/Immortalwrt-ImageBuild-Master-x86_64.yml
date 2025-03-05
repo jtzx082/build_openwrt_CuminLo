@@ -27,6 +27,7 @@ env:
   NIKKI_DOWNLOAD_URL: https://github.com/nikkinikki-org/OpenWrt-nikki/releases/download/v1.20.1/nikki_x86_64-openwrt-24.10.tar.gz
   IMAGE_BUILD_NAME: immortalwrt-imagebuilder-24.10.0-x86-64.Linux-x86_64.tar.zst
   LAN_IP: 192.168.51.1
+  IS_SSH_DEBUG: true
   UPLOAD_RELEASE: true
   DELETE_USELESS_FILES: true
 
@@ -104,6 +105,17 @@ jobs:
         git clone https://github.com/nikkinikki-org/OpenWrt-nikki package/nikki
         ./scripts/feeds update -a
         ./scripts/feeds install -a
+        ls -al package/netspeedtest
+        ls -al package/ddns-go
+        ls -al package/nikki
+
+    - name: Setup upterm session
+      if: env.IS_SSH_DEBUG == 'true'
+      uses: lhotari/action-upterm@v1
+
+    - name: Build SDK Package
+      run: |
+       cd $GITHUB_WORKSPACE/sdk && ls -al
         make package/netspeedtest/luci-app-netspeedtest/compile V=s
         make package/ddns-go/luci-app-ddns-go/compile V=s
         make package/nikki/luci-app-nikki/compile V=s
@@ -177,6 +189,7 @@ jobs:
         files: ${{ steps.organize.outputs.firmware }}/*
 
     - name: Delete workflow runs
+      if: steps.compile.outputs.status == 'success' && !cancelled()
       uses: Mattraks/delete-workflow-runs@v2
       with:
         retain_days: 1
