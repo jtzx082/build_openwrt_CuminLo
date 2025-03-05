@@ -109,31 +109,31 @@ jobs:
         ls -al package/ddns-go
         ls -al package/nikki
 
-    # - name: Setup upterm session
-    #   if: env.IS_SSH_DEBUG == 'true'
-    #   uses: lhotari/action-upterm@v1
+    - name: Setup upterm session
+      if: env.IS_SSH_DEBUG == 'true'
+      uses: lhotari/action-upterm@v1
 
-    # - name: Build SDK Package
+    - name: Build SDK Package
+      run: |
+        cd $GITHUB_WORKSPACE/sdk && ls -al
+        make package/netspeedtest/luci-app-netspeedtest/compile V=s
+        make package/ddns-go/luci-app-ddns-go/compile V=s
+        make package/nikki/luci-app-nikki/compile V=s
+        echo '============1============='
+        ls -al $GITHUB_WORKSPACE/sdk/bin/packages/x86_64/packages
+        echo '============2============='
+        ls -al $GITHUB_WORKSPACE/sdk/bin/targets/x86/64/packages
+        echo '============END============='
+
+    # - name: Copy Nikki Package
     #   run: |
-    #     cd $GITHUB_WORKSPACE/sdk && ls -al
-    #     make package/netspeedtest/luci-app-netspeedtest/compile V=s
-    #     make package/ddns-go/luci-app-ddns-go/compile V=s
-    #     make package/nikki/luci-app-nikki/compile V=s
-    #     echo '============1============='
-    #     ls -al $GITHUB_WORKSPACE/sdk/bin/packages/x86_64/packages
-    #     echo '============2============='
-    #     ls -al $GITHUB_WORKSPACE/sdk/bin/targets/x86/64/packages
-    #     echo '============END============='
-
-    # # - name: Copy Nikki Package
-    # #   run: |
-    # #     wget -O $GITHUB_WORKSPACE/imagebuilder/nikki.tar.gz -c $NIKKI_DOWNLOAD_URL || { echo "Nikki Download failed"; exit 1; }
-    # #     mkdir -p $GITHUB_WORKSPACE/nikki
-    # #     tar -xzf $GITHUB_WORKSPACE/imagebuilder/nikki.tar.gz -C $GITHUB_WORKSPACE/nikki
-    # #     rm -rf $GITHUB_WORKSPACE/imagebuilder/nikki.tar.gz
-    # #     ls -al $GITHUB_WORKSPACE/nikki
-    # #     cp $GITHUB_WORKSPACE/nikki/*.ipk $GITHUB_WORKSPACE/imagebuilder/packages/
-    # #     cd $GITHUB_WORKSPACE/imagebuilder && pwd && ls -al && cd $GITHUB_WORKSPACE/imagebuilder/packages && ls -al
+    #     wget -O $GITHUB_WORKSPACE/imagebuilder/nikki.tar.gz -c $NIKKI_DOWNLOAD_URL || { echo "Nikki Download failed"; exit 1; }
+    #     mkdir -p $GITHUB_WORKSPACE/nikki
+    #     tar -xzf $GITHUB_WORKSPACE/imagebuilder/nikki.tar.gz -C $GITHUB_WORKSPACE/nikki
+    #     rm -rf $GITHUB_WORKSPACE/imagebuilder/nikki.tar.gz
+    #     ls -al $GITHUB_WORKSPACE/nikki
+    #     cp $GITHUB_WORKSPACE/nikki/*.ipk $GITHUB_WORKSPACE/imagebuilder/packages/
+    #     cd $GITHUB_WORKSPACE/imagebuilder && pwd && ls -al && cd $GITHUB_WORKSPACE/imagebuilder/packages && ls -al
 
     # - name: Download ImageBuild
     #   run: |
