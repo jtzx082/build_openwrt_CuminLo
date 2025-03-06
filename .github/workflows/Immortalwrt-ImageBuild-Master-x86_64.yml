@@ -22,6 +22,13 @@ env:
   DELETE_USELESS_FILES: true
   NETWORK_LAN_IP: ${{ secrets.NETWORK_LAN_IP }}
   ZEROTIER_ID: ${{ secrets.ZEROTIER_ID }}
+  NETWORK_WAN_USERNAME: ${{ secrets.NETWORK_WAN_USERNAME }}
+  NETWORK_WAN_PASSWORD: ${{ secrets.NETWORK_WAN_PASSWORD }}
+  NETWORK_WG_PRESHARED_KEY_ONEPLUS: ${{ secrets.NETWORK_WG_PRESHARED_KEY_ONEPLUS }}
+  NETWORK_WG_ENDPOINT_HOST: ${{ secrets.NETWORK_WG_ENDPOINT_HOST }}
+  NETWORK_WG_PRESHARED_KEY_MAC_AIR: ${{ secrets.NETWORK_WG_PRESHARED_KEY_MAC_AIR }}
+  NETWORK_WG_ENDPOINT_HOST_V4: ${{ secrets.NETWORK_WG_ENDPOINT_HOST_V4 }}
+  CLOUDFLARED_TUNNEL_TOKEN: ${{ secrets.CLOUDFLARED_TUNNEL_TOKEN }}
 
 jobs:
   build:
@@ -141,6 +148,12 @@ jobs:
         for file in $(find $GITHUB_WORKSPACE/files/master/etc/uci-defaults -type f); do
           sed -i "s|\$ZEROTIER_ID|$ZEROTIER_ID|g" "$file"
           sed -i "s|\$NETWORK_LAN_IP|$NETWORK_LAN_IP|g" "$file"
+          sed -i "s|\$NETWORK_WAN_USERNAME|$NETWORK_WAN_USERNAME|g" "$file"
+          sed -i "s|\$NETWORK_WG_PRESHARED_KEY_ONEPLUS|$NETWORK_WG_PRESHARED_KEY_ONEPLUS|g" "$file"
+          sed -i "s|\$NETWORK_WG_ENDPOINT_HOST|$NETWORK_WG_ENDPOINT_HOST|g" "$file"
+          sed -i "s|\$NETWORK_WG_PRESHARED_KEY_MAC_AIR|$NETWORK_WG_PRESHARED_KEY_MAC_AIR|g" "$file"
+          sed -i "s|\$NETWORK_WG_ENDPOINT_HOST_V4|$NETWORK_WG_ENDPOINT_HOST_V4|g" "$file"
+          sed -i "s|\$CLOUDFLARED_TUNNEL_TOKEN|$CLOUDFLARED_TUNNEL_TOKEN|g" "$file"
         done
         cp $GITHUB_WORKSPACE/sdk/bin/packages/x86_64/base/*.ipk $GITHUB_WORKSPACE/imagebuilder/packages/
         PACKAGES=$(cat $GITHUB_WORKSPACE/master.packages.txt | tr '\n' ' ')
