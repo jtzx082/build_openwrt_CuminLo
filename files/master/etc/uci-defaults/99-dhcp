@@ -10,5 +10,8 @@ del dhcp.lan.ra_flags
 add_list dhcp.lan.ra_flags='none'
 set dhcp.lan.dns_service='0'
 
+del dhcp.cfg01411c.dns_redirect
+set dhcp.cfg01411c.port='54'
+
 commit
 EOF

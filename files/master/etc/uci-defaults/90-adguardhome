@@ -1,0 +1,7 @@
+uci batch << EOF
+
+set adguardhome.config.enabled='1'
+set adguardhome.config.config='/etc/config/set/adguardhome/adguardhome.yaml'
+
+commit
+EOF
