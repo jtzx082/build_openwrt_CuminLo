@@ -1,12 +1,30 @@
 uci batch << EOF
 
+del firewall.dns_int
+set firewall.dns_int="redirect"
+set firewall.dns_int.name="Intercept-DNS"
+set firewall.dns_int.family="any"
+set firewall.dns_int.proto="tcp udp"
+set firewall.dns_int.src="lan"
+set firewall.dns_int.src_dport="53"
+set firewall.dns_int.target="DNAT"
+
+del firewall.dot_fwd
+set firewall.dot_fwd="rule"
+set firewall.dot_fwd.name="Deny-DoT"
+set firewall.dot_fwd.src="lan"
+set firewall.dot_fwd.dest="wan"
+set firewall.dot_fwd.dest_port="853"
+set firewall.dot_fwd.proto="tcp udp"
+set firewall.dot_fwd.target="REJECT"
+
 add firewall redirect
 set firewall.@redirect[-1].target='DNAT'
 set firewall.@redirect[-1].name='Hijack DNS'
 set firewall.@redirect[-1].family='any'
 set firewall.@redirect[-1].src='lan'
-set firewall.@redirect[-1].src_dport='53'
-set firewall.@redirect[-1].dest_port='5553'
+set firewall.@redirect[-1].src_dport='54'
+set firewall.@redirect[-1].dest_port='53'
 
 commit
 EOF
