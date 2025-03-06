@@ -1,11 +1,3 @@
-#
-# Copyright (c) 2019-2020 P3TERX <https://p3terx.com>
-#
-# This is free software, licensed under the MIT License.
-# See /LICENSE for more information.
-#
-# https://github.com/P3TERX/Actions-OpenWrt
-# Description: Build OpenWrt using GitHub Actions
 # 使用ImageBuild的方式
 # - Master: 主路由模式，功能较全
 # - AP:     Ap模式 精简
@@ -25,10 +17,11 @@ env:
   IMAGE_BUILD_URL: https://downloads.immortalwrt.org/releases/24.10.0/targets/x86/64/immortalwrt-imagebuilder-24.10.0-x86-64.Linux-x86_64.tar.zst
   SDK_URL: https://downloads.immortalwrt.org/releases/24.10.0/targets/x86/64/immortalwrt-sdk-24.10.0-x86-64_gcc-13.3.0_musl.Linux-x86_64.tar.zst
   IMAGE_BUILD_NAME: immortalwrt-imagebuilder-24.10.0-x86-64.Linux-x86_64.tar.zst
-  LAN_IP: 192.168.51.1
   IS_SSH_DEBUG: false
   UPLOAD_RELEASE: true
   DELETE_USELESS_FILES: true
+  NETWORK_LAN_IP: ${{ secrets.NETWORK_LAN_IP }}
+  ZEROTIER_ID: ${{ secrets.ZEROTIER_ID }}
 
 jobs:
   build:
@@ -98,16 +91,13 @@ jobs:
         mkdir -p $GITHUB_WORKSPACE/sdk
         tar -I zstd -xf immortalwrt-sdk.tar.zst -C $GITHUB_WORKSPACE/sdk --strip-components=1
         rm -rf immortalwrt-sdk.tar.zst
-        cd $GITHUB_WORKSPACE/sdk && ls -al
+        cd $GITHUB_WORKSPACE/sdk
         git clone https://github.com/sirpdboy/netspeedtest.git package/netspeedtest
         git clone https://github.com/sirpdboy/luci-app-ddns-go.git package/ddns-go
         git clone https://github.com/nikkinikki-org/OpenWrt-nikki package/nikki
         ./scripts/feeds update -a
         ./scripts/feeds install -a
         make defconfig
-        ls -al package/netspeedtest
-        ls -al package/ddns-go
-        ls -al package/nikki
 
     - name: Setup upterm session
       if: env.IS_SSH_DEBUG == 'true'
@@ -115,7 +105,7 @@ jobs:
     
     - name: Build SDK Package
       run: |
-        cd $GITHUB_WORKSPACE/sdk && ls -al
+        cd $GITHUB_WORKSPACE/sdk
         make -j$(nproc) package/netspeedtest/luci-app-netspeedtest/compile \
           package/ddns-go/luci-app-ddns-go/compile \
           package/nikki/luci-app-nikki/compile V=s || { echo "Compile failed"; exit 1; }
@@ -124,16 +114,6 @@ jobs:
         echo '============2============='
         ls -al $GITHUB_WORKSPACE/sdk/bin/packages/x86_64/*/
         echo '============3============='
-
-    # - name: Copy Nikki Package
-    #   run: |
-    #     wget -O $GITHUB_WORKSPACE/imagebuilder/nikki.tar.gz -c $NIKKI_DOWNLOAD_URL || { echo "Nikki Download failed"; exit 1; }
-    #     mkdir -p $GITHUB_WORKSPACE/nikki
-    #     tar -xzf $GITHUB_WORKSPACE/imagebuilder/nikki.tar.gz -C $GITHUB_WORKSPACE/nikki
-    #     rm -rf $GITHUB_WORKSPACE/imagebuilder/nikki.tar.gz
-    #     ls -al $GITHUB_WORKSPACE/nikki
-    #     cp $GITHUB_WORKSPACE/nikki/*.ipk $GITHUB_WORKSPACE/imagebuilder/packages/
-    #     cd $GITHUB_WORKSPACE/imagebuilder && pwd && ls -al && cd $GITHUB_WORKSPACE/imagebuilder/packages && ls -al
 
     - name: Download ImageBuild
       run: |
@@ -158,6 +138,10 @@ jobs:
     - name: Build the firmware
       id: compile
       run: |
+        for file in $(find $GITHUB_WORKSPACE/files/master/etc/uci-defaults -type f); do
+          sed -i "s|\$ZEROTIER_ID|$ZEROTIER_ID|g" "$file"
+          sed -i "s|\$NETWORK_LAN_IP|$NETWORK_LAN_IP|g" "$file"
+        done
         cp $GITHUB_WORKSPACE/sdk/bin/packages/x86_64/base/*.ipk $GITHUB_WORKSPACE/imagebuilder/packages/
         PACKAGES=$(cat $GITHUB_WORKSPACE/master.packages.txt | tr '\n' ' ')
         cd $GITHUB_WORKSPACE/imagebuilder
