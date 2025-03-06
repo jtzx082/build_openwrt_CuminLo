@@ -1,5 +1,5 @@
 192.168.50.1:1053
-[/ntp.org/ntp.tencent.com/ntp1.aliyun.com/ntp.ntsc.ac.cn/cn.ntp.org.cn]223.5.5.5 119.29.29.29 114.114.114.114
+[/ntp.org/ntp.tencent.com/ntp1.aliyun.com/ntp.ntsc.ac.cn/cn.ntp.org.cn/]223.5.5.5 119.29.29.29 114.114.114.114
 [/googleapis.com/google.com/]192.168.50.1:1053
 [/cn/com.cn/com.lan/cn.lan/qtlcdn.com/netease.com/]quic://223.5.5.5
 [/xn--fiqs8s/]quic://223.5.5.5
