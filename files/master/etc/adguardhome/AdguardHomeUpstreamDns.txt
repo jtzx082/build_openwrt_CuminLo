@@ -4,6 +4,8 @@
 [/googleapis.com/google.com/]192.168.50.1:1053
 [/cn/com.cn/com.lan/cn.lan/qtlcdn.com/netease.com/]quic://223.5.5.5
 [/xn--fiqs8s/]quic://223.5.5.5
+[/tailscale.com/]quic://223.5.5.5
+[/v2.argotunnel.com/]quic://223.5.5.5
 [/in-addr.arpa/]quic://223.5.5.5
 [/ip6.arpa/]quic://223.5.5.5
 [/myip.ipip.net/oray.com/ip.3322.net/]quic://223.5.5.5

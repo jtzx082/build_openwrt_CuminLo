@@ -68,7 +68,12 @@ kmod-dwmac-intel
 kmod-forcedeth
 kmod-fs-vfat
 kmod-tg3
+iptables-nft
 kmod-inet-diag
+kmod-ipt-conntrack
+kmod-ipt-conntrack-extra
+kmod-ipt-conntrack-label
+kmod-ipt-nat
 kmod-nft-tproxy
 kmod-tun
 kmod-drm-i915

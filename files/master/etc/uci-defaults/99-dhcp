@@ -13,10 +13,10 @@ set dhcp.lan.dns_service='0'
 del dhcp.cfg01411c.dns_redirect
 set dhcp.cfg01411c.port='54'
 
-uci add dhcp host
-uci set dhcp.@host[-1].name='Nas'
-uci add_list dhcp.@host[-1].mac='22:13:4D:01:6B:BB'
-uci set dhcp.@host[-1].ip='10.0.50.5'
+add dhcp host
+set dhcp.@host[-1].name='Nas'
+add_list dhcp.@host[-1].mac='22:13:4D:01:6B:BB'
+set dhcp.@host[-1].ip='192.168.50.9'
 
 add dhcp domain
 set dhcp.@domain[-1].name='container-qbittorrent'
