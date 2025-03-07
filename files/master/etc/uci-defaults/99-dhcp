@@ -2,8 +2,8 @@ uci batch << EOF
 
 del dhcp.lan.ra_slaac
 del dhcp.lan.dhcpv6
-set dhcp.lan.limit='200'
-set dhcp.lan.leasetime='6h'
+set dhcp.lan.limit='350'
+set dhcp.lan.leasetime='12h'
 add_list dhcp.lan.dhcp_option='3,192.168.50.1'
 add_list dhcp.lan.dhcp_option='6,192.168.50.1'
 del dhcp.lan.ra_flags
@@ -14,13 +14,96 @@ del dhcp.cfg01411c.dns_redirect
 set dhcp.cfg01411c.port='54'
 
 add dhcp host
+set dhcp.@host[-1].name='AP1'
+add_list dhcp.@host[-1].mac='A4:39:B6:22:0B:60'
+set dhcp.@host[-1].ip='192.168.50.3'
+
+add dhcp host
+set dhcp.@host[-1].name='AP2'
+add_list dhcp.@host[-1].mac='A4:39:B6:10:FE:85'
+set dhcp.@host[-1].ip='192.168.50.4'
+
+add dhcp host
 set dhcp.@host[-1].name='Nas'
 add_list dhcp.@host[-1].mac='22:13:4D:01:6B:BB'
-set dhcp.@host[-1].ip='192.168.50.9'
+set dhcp.@host[-1].ip='192.168.50.49'
+
+add dhcp host
+set dhcp.@host[-1].name='Phone-Oneplus-9-pro.lan'
+add_list dhcp.@host[-1].mac='D0:49:7C:D5:43:50'
+set dhcp.@host[-1].ip='192.168.50.60'
+
+add dhcp host
+set dhcp.@host[-1].name='Laptop-Cumin-MacBookAir.lan'
+add_list dhcp.@host[-1].mac='D6:EA:B5:26:34:02'
+set dhcp.@host[-1].ip='192.168.50.61'
+
+add dhcp host
+set dhcp.@host[-1].name='Computer-Game.lan'
+add_list dhcp.@host[-1].mac='D0:12:55:B9:2D:A9'
+set dhcp.@host[-1].ip='192.168.50.62'
+
+add dhcp host
+set dhcp.@host[-1].name='Laptop-Mia-MacBookAir.lan'
+add_list dhcp.@host[-1].mac='90:FB:5D:02:AC:91'
+set dhcp.@host[-1].ip='192.168.50.63'
+
+add dhcp host
+set dhcp.@host[-1].name='Laptop-iPad.lan'
+add_list dhcp.@host[-1].mac='60:06:E3:19:A0:15'
+set dhcp.@host[-1].ip='192.168.50.64'
+
+add dhcp host
+set dhcp.@host[-1].name='Phone-iPhone-13.lan'
+add_list dhcp.@host[-1].mac='24:5E:48:B2:22:88'
+set dhcp.@host[-1].ip='192.168.50.65'
+
+add dhcp host
+set dhcp.@host[-1].name='k9.lan'
+add_list dhcp.@host[-1].mac='08:7D:B8:4E:17:5F'
+set dhcp.@host[-1].ip='192.168.50.66'
+
+add dhcp host
+set dhcp.@host[-1].name='Phone-Xiaomi-12X.lan'
+add_list dhcp.@host[-1].mac='50:98:39:2B:1A:34'
+set dhcp.@host[-1].ip='192.168.50.67'
+
+add dhcp host
+set dhcp.@host[-1].name='Print-Epson.lan'
+add_list dhcp.@host[-1].mac='A4:D7:3C:49:95:F'
+set dhcp.@host[-1].ip='192.168.50.80'
+
+add dhcp host
+set dhcp.@host[-1].name='IOT-HISENSE.lan'
+add_list dhcp.@host[-1].mac='B4:43:0D:D6:01:92'
+set dhcp.@host[-1].ip='192.168.50.81'
+
+add dhcp host
+set dhcp.@host[-1].name='IOT-BCD-408WPJD.lan'
+add_list dhcp.@host[-1].mac='B8:12:DA:CF:13:35'
+set dhcp.@host[-1].ip='192.168.50.82'
+
+add dhcp host
+set dhcp.@host[-1].name='saygift.wol.wifi.lan'
+add_list dhcp.@host[-1].mac='EC:64:C9:CC:E2:10'
+set dhcp.@host[-1].ip='192.168.50.83'
+
+add dhcp host
+set dhcp.@host[-1].name='MiAiSoundbox-L05C.lan'
+add_list dhcp.@host[-1].mac='90:FB:5D:02:AC:91'
+set dhcp.@host[-1].ip='192.168.50.100'
 
 add dhcp domain
 set dhcp.@domain[-1].name='container-qbittorrent'
 set dhcp.@domain[-1].ip='192.168.50.22'
+
+add dhcp domain
+set dhcp.@domain[-1].name='container-portainer'
+set dhcp.@domain[-1].ip='192.168.50.23'
+
+add dhcp domain
+set dhcp.@domain[-1].name='container-gecoosac'
+set dhcp.@domain[-1].ip='192.168.50.25'
 
 commit
 EOF
