@@ -24,7 +24,7 @@ dns:
   refuse_any: false
   upstream_dns:
     - quic://223.5.5.5
-  upstream_dns_file: /etc/config/set/adguardhome/AdguardHomeUpstreamDns.txt
+  upstream_dns_file: /etc/adguardhome/AdguardHomeUpstreamDns.txt
   bootstrap_dns:
     - quic://223.5.5.5
     - tls://1.12.12.12

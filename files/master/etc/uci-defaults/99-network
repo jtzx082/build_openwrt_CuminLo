@@ -24,7 +24,7 @@ set network.WG=interface
 set network.WG.proto='wireguard'
 set network.WG.private_key='4MrEbeyhaOR/5x88XuhCQ4wvGVIF9eeqZOarzwv9g2I='
 set network.WG.listen_port='51820'
-add_list network.WG.addresses='192.168.10.1'
+add_list network.WG.addresses='192.168.10.1/24'
 set network.WG.ip6assign='64'
 set network.WG.ip6ifaceid='eui64'
 add network wireguard_WG
@@ -32,19 +32,17 @@ set network.@wireguard_WG[-1].description='OnePlus9Pro'
 set network.@wireguard_WG[-1].public_key='ykHILC5XAnQ58C/VngbseQ5diPRR/SqJbDiTJdDZeQY='
 set network.@wireguard_WG[-1].private_key='QPkNPP3xOsPacngaz+641zozsOhl9pVB16tdseHswn8='
 set network.@wireguard_WG[-1].preshared_key='$NETWORK_WG_PRESHARED_KEY_ONEPLUS'
-set network.@wireguard_WG[-1].allowed_ips='192.168.10.39'
+set network.@wireguard_WG[-1].allowed_ips='192.168.10.39/32'
 set network.@wireguard_WG[-1].route_allowed_ips='1'
 set network.@wireguard_WG[-1].persistent_keepalive='25'
-set network.@wireguard_WG[-1].endpoint_host='$NETWORK_WG_ENDPOINT_HOST'
 add network wireguard_WG
 set network.@wireguard_WG[-1].description='macOS'
 set network.@wireguard_WG[-1].public_key='7TK9fBBcOlKHKQUnZx/SIWCon0k7C6SpJUovlJScq3Y='
 set network.@wireguard_WG[-1].private_key='KI3xpzS4+5qzGlH9elu/Y41ag4sq28BxhNlWNo27GU0='
 set network.@wireguard_WG[-1].preshared_key='$NETWORK_WG_PRESHARED_KEY_MAC_AIR'
-set network.@wireguard_WG[-1].allowed_ips='192.168.10.10'
+set network.@wireguard_WG[-1].allowed_ips='192.168.10.10/32'
 set network.@wireguard_WG[-1].route_allowed_ips='1'
 set network.@wireguard_WG[-1].persistent_keepalive='25'
-set network.@wireguard_WG[-1].endpoint_host='$NETWORK_WG_ENDPOINT_HOST_V4'
 
 commit
 EOF
