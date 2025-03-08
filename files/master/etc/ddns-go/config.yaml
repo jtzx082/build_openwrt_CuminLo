@@ -1,0 +1,37 @@
+lang: zh
+dnsconf:
+    - name: WireGuard
+      ipv4:
+        enable: true
+        gettype: netInterface
+        url: https://myip4.ipip.net, https://ddns.oray.com/checkip, https://ip.3322.net
+        netinterface: pppoe-wan
+        cmd: ""
+        domains:
+            - $CLOUDFLARED_DDNS_DOMAIN_WG
+            - $CLOUDFLARED_DDNS_DOMAIN_WG_FOUR
+            - $CLOUDFLARED_DDNS_DOMAIN_RUSTDESK
+      ipv6:
+        enable: true
+        gettype: netInterface
+        url: https://myip6.ipip.net, https://speed.neu6.edu.cn/getIP.php, https://v6.ident.me
+        netinterface: pppoe-wan
+        cmd: ""
+        ipv6reg: ""
+        domains:
+            - $CLOUDFLARED_DDNS_DOMAIN_WG
+            - $CLOUDFLARED_DDNS_DOMAIN_WG_SIX
+            - $CLOUDFLARED_DDNS_DOMAIN_RUSTDESK
+      dns:
+        name: cloudflare
+        id: ""
+        secret: $CLOUDFLARED_SECRET
+      ttl: ""
+user:
+    username: home.ddns
+    password: $2a$10$QznsZ9Vhcr6PepDahjrRpuYpFZ2uA4nVNUeJnU42grviW6CtMYMfO
+webhook:
+    webhookurl: ""
+    webhookrequestbody: ""
+    webhookheaders: ""
+notallowwanaccess: true
