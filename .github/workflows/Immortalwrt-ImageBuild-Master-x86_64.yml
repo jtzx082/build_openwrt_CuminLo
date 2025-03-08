@@ -147,9 +147,9 @@ jobs:
       id: compile
       run: |
         sed -i "s|\$CLOUDFLARED_SECRET|$CLOUDFLARED_SECRET|g" "$GITHUB_WORKSPACE/files/master/etc/ddns-go/config.yaml"
-        sed -i "s|\$CLOUDFLARED_DDNS_DOMAIN_WG|$CLOUDFLARED_DDNS_DOMAIN_WG|g" "$GITHUB_WORKSPACE/files/master/etc/ddns-go/config.yaml"
         sed -i "s|\$CLOUDFLARED_DDNS_DOMAIN_WGFOUR|$CLOUDFLARED_DDNS_DOMAIN_WGFOUR|g" "$GITHUB_WORKSPACE/files/master/etc/ddns-go/config.yaml"
         sed -i "s|\$CLOUDFLARED_DDNS_DOMAIN_WGSIX|$CLOUDFLARED_DDNS_DOMAIN_WGSIX|g" "$GITHUB_WORKSPACE/files/master/etc/ddns-go/config.yaml"
+        sed -i "s|\$CLOUDFLARED_DDNS_DOMAIN_WG|$CLOUDFLARED_DDNS_DOMAIN_WG|g" "$GITHUB_WORKSPACE/files/master/etc/ddns-go/config.yaml"
         sed -i "s|\$CLOUDFLARED_DDNS_DOMAIN_RUSTDESK|$CLOUDFLARED_DDNS_DOMAIN_RUSTDESK|g" "$GITHUB_WORKSPACE/files/master/etc/ddns-go/config.yaml"
 
         for file in $(find $GITHUB_WORKSPACE/files/master/etc/uci-defaults -type f); do

@@ -20,27 +20,5 @@ set network.MODEM.gateway='192.168.1.1'
 set network.MODEM.netmask='255.255.255.0'
 set network.MODEM.defaultroute='0'
 
-set network.WG=interface
-set network.WG.proto='wireguard'
-set network.WG.private_key='4MrEbeyhaOR/5x88XuhCQ4wvGVIF9eeqZOarzwv9g2I='
-set network.WG.listen_port='51820'
-add_list network.WG.addresses='10.10.100.1/24'
-set network.WG.ip6assign='64'
-set network.WG.ip6ifaceid='eui64'
-add network wireguard_WG
-set network.@wireguard_WG[-1].description='Phone-OnePlus9Pro'
-set network.@wireguard_WG[-1].public_key='ykHILC5XAnQ58C/VngbseQ5diPRR/SqJbDiTJdDZeQY='
-set network.@wireguard_WG[-1].preshared_key='$NETWORK_WG_PRESHARED_KEY_ONEPLUS'
-set network.@wireguard_WG[-1].allowed_ips='10.10.100.2/32'
-set network.@wireguard_WG[-1].route_allowed_ips='1'
-set network.@wireguard_WG[-1].persistent_keepalive='25'
-add network wireguard_WG
-set network.@wireguard_WG[-1].description='Laptop-MacBookAir'
-set network.@wireguard_WG[-1].public_key='7TK9fBBcOlKHKQUnZx/SIWCon0k7C6SpJUovlJScq3Y='
-set network.@wireguard_WG[-1].preshared_key='$NETWORK_WG_PRESHARED_KEY_MAC_AIR'
-set network.@wireguard_WG[-1].allowed_ips='10.10.100.3/32'
-set network.@wireguard_WG[-1].route_allowed_ips='1'
-set network.@wireguard_WG[-1].persistent_keepalive='25'
-
 commit
 EOF
