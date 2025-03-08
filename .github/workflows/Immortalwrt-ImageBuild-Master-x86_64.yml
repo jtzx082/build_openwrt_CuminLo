@@ -99,7 +99,6 @@ jobs:
         rm -rf immortalwrt-sdk.tar.zst
         cd $GITHUB_WORKSPACE/sdk
         git clone https://github.com/sirpdboy/netspeedtest.git package/netspeedtest
-        git clone https://github.com/sirpdboy/luci-app-ddns-go.git package/ddns-go
         git clone https://github.com/nikkinikki-org/OpenWrt-nikki package/nikki
         ./scripts/feeds update -a
         ./scripts/feeds install -a
@@ -113,7 +112,6 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/sdk
         make -j$(nproc) package/netspeedtest/luci-app-netspeedtest/compile \
-          package/ddns-go/luci-app-ddns-go/compile \
           package/nikki/luci-app-nikki/compile V=s || { echo "Compile failed"; exit 1; }
         echo '============1============='
         ls -al $GITHUB_WORKSPACE/sdk/bin/packages/x86_64/base/
