@@ -1,0 +1,7 @@
+uci batch << EOF
+
+set shairport-sync.shairport_sync.enabled='1'
+set shairport-sync.shairport_sync.name='罗家音响'
+
+commit
+EOF

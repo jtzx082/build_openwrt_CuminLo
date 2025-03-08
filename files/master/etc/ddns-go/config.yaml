@@ -9,7 +9,7 @@ dnsconf:
         cmd: ""
         domains:
             - $CLOUDFLARED_DDNS_DOMAIN_WG
-            - $CLOUDFLARED_DDNS_DOMAIN_WG_FOUR
+            - $CLOUDFLARED_DDNS_DOMAIN_WGFOUR
             - $CLOUDFLARED_DDNS_DOMAIN_RUSTDESK
       ipv6:
         enable: true
@@ -20,7 +20,7 @@ dnsconf:
         ipv6reg: ""
         domains:
             - $CLOUDFLARED_DDNS_DOMAIN_WG
-            - $CLOUDFLARED_DDNS_DOMAIN_WG_SIX
+            - $CLOUDFLARED_DDNS_DOMAIN_WGSIX
             - $CLOUDFLARED_DDNS_DOMAIN_RUSTDESK
       dns:
         name: cloudflare
