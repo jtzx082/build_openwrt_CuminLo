@@ -20,6 +20,7 @@ env:
   IS_SSH_DEBUG: false
   UPLOAD_RELEASE: true
   DELETE_USELESS_FILES: true
+  ROOT_PASSWORD: ${{ secrets.ROOT_PASSWORD }}
   NETWORK_LAN_IP: ${{ secrets.NETWORK_LAN_IP }}
   ZEROTIER_ID: ${{ secrets.ZEROTIER_ID }}
   NETWORK_WAN_USERNAME: ${{ secrets.NETWORK_WAN_USERNAME }}
@@ -146,6 +147,8 @@ jobs:
     - name: Build the firmware
       id: compile
       run: |
+        sed -i "s|\$ROOT_PASSWORD|$ROOT_PASSWORD|g" "$GITHUB_WORKSPACE/files/master/etc/uci-defaults/91-system-root"
+
         sed -i "s|\$CLOUDFLARED_SECRET|$CLOUDFLARED_SECRET|g" "$GITHUB_WORKSPACE/files/master/etc/ddns-go/config.yaml"
         sed -i "s|\$CLOUDFLARED_DDNS_DOMAIN_WGFOUR|$CLOUDFLARED_DDNS_DOMAIN_WGFOUR|g" "$GITHUB_WORKSPACE/files/master/etc/ddns-go/config.yaml"
         sed -i "s|\$CLOUDFLARED_DDNS_DOMAIN_WGSIX|$CLOUDFLARED_DDNS_DOMAIN_WGSIX|g" "$GITHUB_WORKSPACE/files/master/etc/ddns-go/config.yaml"
