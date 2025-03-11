@@ -1,0 +1,5 @@
+cat << "EOF" >> /etc/dropbear/authorized_keys
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO9X2fpyes9PBP/qjQUZKGiSSDvrf3OLt/1vHKsSIGlx lo@MacBook-Air
+EOF
+
+chmod 644 /etc/dropbear/authorized_keys
