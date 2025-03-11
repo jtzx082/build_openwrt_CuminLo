@@ -1,7 +1,7 @@
 uci batch << EOF
 
 del ddns-go.config.noweb
-set ddns-go.config.enabled='0'
+set ddns-go.config.enabled='1'
 set ddns-go.config.dns='223.5.5.5'
 set ddns-go.config.insecure='1'
 set ddns-go.config.listen='[::]:9876'
