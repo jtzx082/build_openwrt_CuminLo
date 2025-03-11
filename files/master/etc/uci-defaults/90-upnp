@@ -1,0 +1,14 @@
+uci batch << EOF
+
+del upnpd.config.enable_upnp
+del upnpd.config.enable_natpmp
+del upnpd.config.use_stun
+del upnpd.config.stun_host
+del upnpd.config.stun_port
+del upnpd.config.secure_mode
+del upnpd.config.log_output
+set upnpd.config.enabled='1'
+set upnpd.config.igdv1='0'
+
+commit
+EOF

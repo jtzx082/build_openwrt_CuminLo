@@ -24,5 +24,15 @@ set network.@wireguard_WG[-1].allowed_ips='10.10.100.3/32'
 set network.@wireguard_WG[-1].route_allowed_ips='1'
 set network.@wireguard_WG[-1].persistent_keepalive='25'
 
+add network wireguard_WG
+set network.@wireguard_WG[-1].description='VPS'
+set network.@wireguard_WG[-1].public_key='Yhn2ohQLToboCEkoOiqhA+C0rJhssSb22cMWTb2xTwg='
+set network.@wireguard_WG[-1].preshared_key='$NETWORK_WG_PRESHARED_KEY_VPS'
+set network.@wireguard_WG[-1].allowed_ips='10.50.50.1/32'
+set network.@wireguard_WG[-1].endpoint_host='$VPS_IP'
+set network.@wireguard_WG[-1].route_allowed_ips='1'
+set network.@wireguard_WG[-1].persistent_keepalive='25'
+set network.@wireguard_WG[-1].endpoint_port='63880'
+
 commit
 EOF
