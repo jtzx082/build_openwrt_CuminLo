@@ -1,0 +1,7 @@
+cat << "EOF" >> /etc/crontabs/root
+*/2 * * * * /usr/bin/wireguard_watchdog
+0 3 * * * /etc/init.d/nikki restart restart
+EOF
+
+uci set system.@system[0].cronloglevel="9"
+uci commit system

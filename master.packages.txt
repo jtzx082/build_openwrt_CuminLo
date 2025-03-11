@@ -6,6 +6,7 @@ ca-bundle
 default-settings-chn
 dnsmasq-full
 dropbear
+diffutils
 firewall4
 fstools
 grub2-bios-setup
@@ -103,11 +104,13 @@ vim-fuller
 tcpdump
 hwinfo
 iwinfo
+bind-dig
 curl
 wget-ssl
 lrzsz
 atop
 btop
+conntrack
 coreutils
 coreutils-nohup
 dmidecode
@@ -119,6 +122,7 @@ nfs-utils
 nfs-utils-libs
 ncat-full
 nmap-full
+nping-ssl
 qrencode
 libqrencode
 tailscale

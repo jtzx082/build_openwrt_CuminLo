@@ -1,7 +1,9 @@
 192.168.50.1:1053
-[/ntp.org/ntp.tencent.com/ntp1.aliyun.com/ntp.ntsc.ac.cn/cn.ntp.org.cn/]223.5.5.5 119.29.29.29 114.114.114.114
-[/example.com/]223.5.5.5 119.29.29.29 114.114.114.114
 [/googleapis.com/google.com/]192.168.50.1:1053
+[/ntp.org/ntp.tencent.com/ntp1.aliyun.com/ntp.ntsc.ac.cn/cn.ntp.org.cn/]223.5.5.5 119.29.29.29 114.114.114.114
+[/time.windows.com/time.nist.gov/]223.5.5.5 119.29.29.29 114.114.114.114
+[/time.apple.com/time.asia.apple.com/]223.5.5.5 119.29.29.29 114.114.114.114
+[/example.com/]223.5.5.5 119.29.29.29 114.114.114.114
 [/cn/com.cn/com.lan/cn.lan/qtlcdn.com/netease.com/]quic://223.5.5.5
 [/xn--fiqs8s/]quic://223.5.5.5
 [/tailscale.com/]quic://223.5.5.5
@@ -130,7 +132,6 @@
 [/tcloudscdn.com/]quic://223.5.5.5
 [/qcloud.com/]quic://223.5.5.5
 [/txyscdn/]quic://223.5.5.5
-[/time.windows.com/]quic://223.5.5.5
 [/tengyuone.com/tengyucloud.com/]quic://223.5.5.5
 [/tencent.com/tencent.com.hk/]quic://223.5.5.5
 [/tencent-blackboard.com/]quic://223.5.5.5
