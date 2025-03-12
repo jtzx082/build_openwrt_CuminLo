@@ -3,7 +3,7 @@ uci batch << EOF
 del network.globals.ula_prefix
 
 set network.lan.ipaddr='$NETWORK_LAN_IP'
-set network.lan.netmask='255.255.254.0'
+set network.lan.netmask='255.255.255.0'
 set network.lan.ip6assign='64'
 set network.lan.ip6ifaceid='eui64'
 

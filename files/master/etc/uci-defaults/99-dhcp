@@ -2,7 +2,6 @@ uci batch << EOF
 
 del dhcp.lan.ra_slaac
 del dhcp.lan.dhcpv6
-set dhcp.lan.limit='350'
 set dhcp.lan.leasetime='12h'
 add_list dhcp.lan.dhcp_option='3,192.168.50.1'
 add_list dhcp.lan.dhcp_option='6,192.168.50.1'
@@ -22,6 +21,11 @@ add dhcp host
 set dhcp.@host[-1].name='AP2'
 add_list dhcp.@host[-1].mac='A4:39:B6:10:FE:85'
 set dhcp.@host[-1].ip='192.168.50.4'
+
+add dhcp host
+set dhcp.@host[-1].name='Xiaomi-iot-gateway-hub1'
+add_list dhcp.@host[-1].mac='B8:88:80:12:CA:C65'
+set dhcp.@host[-1].ip='192.168.50.40'
 
 add dhcp host
 set dhcp.@host[-1].name='Nas'
