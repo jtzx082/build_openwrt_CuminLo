@@ -23,6 +23,26 @@ add_list dhcp.@host[-1].mac='A4:39:B6:10:FE:85'
 set dhcp.@host[-1].ip='192.168.50.4'
 
 add dhcp host
+set dhcp.@host[-1].name='container-qbittorrent'
+add_list dhcp.@host[-1].mac='02:42:c0:a8:32:16'
+set dhcp.@host[-1].ip='192.168.50.22'
+
+add dhcp host
+set dhcp.@host[-1].name='container-portainer'
+add_list dhcp.@host[-1].mac='02:42:c0:a8:32:17'
+set dhcp.@host[-1].ip='192.168.50.23'
+
+add dhcp host
+set dhcp.@host[-1].name='homeassistant.local'
+add_list dhcp.@host[-1].mac='02:42:c0:a8:32:18'
+set dhcp.@host[-1].ip='192.168.50.24'
+
+add dhcp host
+set dhcp.@host[-1].name='container-gecoosac-gateway'
+add_list dhcp.@host[-1].mac='02:42:c0:a8:32:19'
+set dhcp.@host[-1].ip='192.168.50.25'
+
+add dhcp host
 set dhcp.@host[-1].name='Xiaomi-iot-gateway-hub1'
 add_list dhcp.@host[-1].mac='B8:88:80:12:CA:C65'
 set dhcp.@host[-1].ip='192.168.50.40'
@@ -96,18 +116,6 @@ add dhcp host
 set dhcp.@host[-1].name='MiAiSoundbox-L05C.lan'
 add_list dhcp.@host[-1].mac='90:FB:5D:02:AC:91'
 set dhcp.@host[-1].ip='192.168.50.100'
-
-add dhcp domain
-set dhcp.@domain[-1].name='container-qbittorrent'
-set dhcp.@domain[-1].ip='192.168.50.22'
-
-add dhcp domain
-set dhcp.@domain[-1].name='container-portainer'
-set dhcp.@domain[-1].ip='192.168.50.23'
-
-add dhcp domain
-set dhcp.@domain[-1].name='container-gecoosac'
-set dhcp.@domain[-1].ip='192.168.50.25'
 
 commit
 EOF
