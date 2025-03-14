@@ -1,2 +1,3 @@
-curl -s -L https://github.com/nikkinikki-org/OpenWrt-nikki/raw/refs/heads/main/feed.sh | ash
-sleep 1;
+echo "src/gz nikki $NIKKI_FEED_URL" >> /etc/opkg/customfeeds.conf
+
+opkg-key add /etc/nikki/profiles/key-build.pub
