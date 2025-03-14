@@ -114,7 +114,6 @@ conntrack
 coreutils
 coreutils-nohup
 dmidecode
-collectd-mod-disk
 collectd-mod-cpufreq
 collectd-mod-conntrack
 collectd-mod-ipstatistics

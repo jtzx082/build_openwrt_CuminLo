@@ -1,3 +1,5 @@
 echo "src/gz nikki $NIKKI_FEED_URL" >> /etc/opkg/customfeeds.conf
 
-opkg-key add /etc/nikki/profiles/key-build.pub
+opkg-key add /etc/nikki/profiles/key-build.pub; sleep 1;
+
+rm -rf /etc/nikki/profiles/key-build.pub

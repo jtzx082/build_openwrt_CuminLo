@@ -20,7 +20,7 @@ env:
   NIKKI_URL: https://github.com/nikkinikki-org/OpenWrt-nikki
   NIKKI_FEED_URL: https://nikkinikki.pages.dev/openwrt-24.10/x86_64/nikki
   NETSPEEDTEST_URL: https://github.com/sirpdboy/netspeedtest.git
-  IS_ENABLE: 0
+  IS_ENABLE: 1
   IS_SSH_DEBUG: false
   UPLOAD_RELEASE: true
   DELETE_USELESS_FILES: true
