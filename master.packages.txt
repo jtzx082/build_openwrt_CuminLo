@@ -114,6 +114,11 @@ conntrack
 coreutils
 coreutils-nohup
 dmidecode
+collectd-mod-disk
+collectd-mod-cpufreq
+collectd-mod-conntrack
+collectd-mod-ipstatistics
+collectd-mod-dhcpleases
 htop
 iftop
 ip-full
@@ -126,6 +131,7 @@ nping-ssl
 qrencode
 libqrencode
 tailscale
+luci-i18n-netdata-zh-cn
 luci-i18n-package-manager-zh-cn
 luci-i18n-zerotier-zh-cn
 luci-i18n-airplay2-zh-cn
