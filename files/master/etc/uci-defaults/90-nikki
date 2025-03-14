@@ -42,7 +42,7 @@ set nikki.mixin.geoip_mmdb_url='http://ghproxy.imciel.com/https://github.com/Met
 set nikki.mixin.geoip_dat_url='http://ghproxy.imciel.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip-lite.dat'
 set nikki.mixin.geoip_asn_url='http://ghproxy.imciel.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb'
 del nikki.proxy.bypass_dscp
-set nikki.config.enabled='1'
+set nikki.config.enabled='$IS_ENABLE'
 set nikki.config.start_delay='2'
 set nikki.config.scheduled_restart='1'
 set nikki.config.fast_reload='0'

@@ -17,6 +17,7 @@ env:
   IMAGE_BUILD_URL: https://downloads.immortalwrt.org/releases/24.10.0/targets/x86/64/immortalwrt-imagebuilder-24.10.0-x86-64.Linux-x86_64.tar.zst
   SDK_URL: https://downloads.immortalwrt.org/releases/24.10.0/targets/x86/64/immortalwrt-sdk-24.10.0-x86-64_gcc-13.3.0_musl.Linux-x86_64.tar.zst
   IMAGE_BUILD_NAME: immortalwrt-imagebuilder-24.10.0-x86-64.Linux-x86_64.tar.zst
+  IS_ENABLE: 0
   IS_SSH_DEBUG: false
   UPLOAD_RELEASE: true
   DELETE_USELESS_FILES: true
@@ -158,6 +159,7 @@ jobs:
         sed -i "s|\$CLOUDFLARED_DDNS_DOMAIN_RUSTDESK|$CLOUDFLARED_DDNS_DOMAIN_RUSTDESK|g" "$GITHUB_WORKSPACE/files/master/etc/ddns-go/config.yaml"
 
         for file in $(find $GITHUB_WORKSPACE/files/master/etc/uci-defaults -type f); do
+          sed -i "s|\$IS_ENABLE|$IS_ENABLE|g" "$file"
           sed -i "s|\$ZEROTIER_ID|$ZEROTIER_ID|g" "$file"
           sed -i "s|\$VPS_IP|$VPS_IP|g" "$file"
           sed -i "s|\$NETWORK_LAN_IP|$NETWORK_LAN_IP|g" "$file"
