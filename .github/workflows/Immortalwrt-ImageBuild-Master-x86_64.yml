@@ -20,7 +20,7 @@ env:
   NIKKI_URL: https://github.com/nikkinikki-org/OpenWrt-nikki
   NIKKI_FEED_URL: https://nikkinikki.pages.dev/openwrt-24.10/x86_64/nikki
   NETSPEEDTEST_URL: https://github.com/sirpdboy/netspeedtest.git
-  IS_ENABLE: 1
+  IS_ENABLE: 0
   IS_SSH_DEBUG: false
   UPLOAD_RELEASE: true
   DELETE_USELESS_FILES: true
@@ -154,6 +154,8 @@ jobs:
       id: compile
       run: |
         sed -i "s|\$ROOT_PASSWORD|$ROOT_PASSWORD|g" "$GITHUB_WORKSPACE/files/master/etc/uci-defaults/91-system-root"
+
+        sed -i "s|\$PROXY_PROVIDERS_YAML|$PROXY_PROVIDERS_YAML|g" "$GITHUB_WORKSPACE/files/master/etc/nikki/profiles/config.yml"
 
         sed -i "s|\$CLOUDFLARED_SECRET|$CLOUDFLARED_SECRET|g" "$GITHUB_WORKSPACE/files/master/etc/ddns-go/config.yaml"
         sed -i "s|\$CLOUDFLARED_DDNS_DOMAIN_WGFOUR|$CLOUDFLARED_DDNS_DOMAIN_WGFOUR|g" "$GITHUB_WORKSPACE/files/master/etc/ddns-go/config.yaml"
