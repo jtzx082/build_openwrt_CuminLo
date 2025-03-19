@@ -154,8 +154,6 @@ jobs:
     - name: Build the firmware
       id: compile
       run: |
-        sed -i "s|\$PROXY_PROVIDERS_YAML|$PROXY_PROVIDERS_YAML|g" "$GITHUB_WORKSPACE/files/master/etc/nikki/profiles/config.yml"
-        
         sed -i "s|\$ROOT_PASSWORD|$ROOT_PASSWORD|g" "$GITHUB_WORKSPACE/files/master/etc/uci-defaults/91-system-root"
 
         sed -i "s|\$CLOUDFLARED_SECRET|$CLOUDFLARED_SECRET|g" "$GITHUB_WORKSPACE/files/master/etc/ddns-go/config.yaml"
