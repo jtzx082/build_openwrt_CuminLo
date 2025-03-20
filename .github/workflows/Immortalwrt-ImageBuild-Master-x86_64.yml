@@ -20,7 +20,7 @@ env:
   NIKKI_URL: https://github.com/nikkinikki-org/OpenWrt-nikki
   NIKKI_FEED_URL: https://nikkinikki.pages.dev/openwrt-24.10/x86_64/nikki
   NETSPEEDTEST_URL: https://github.com/sirpdboy/netspeedtest.git
-  IS_ENABLE: 0
+  IS_ENABLE: 1
   IS_SSH_DEBUG: false
   UPLOAD_RELEASE: true
   DELETE_USELESS_FILES: true
@@ -28,7 +28,6 @@ env:
   NETWORK_LAN_IP: ${{ secrets.NETWORK_LAN_IP }}
   ZEROTIER_ID: ${{ secrets.ZEROTIER_ID }}
   VPS_IP: ${{ secrets.VPS_IP }}
-  PROXY_PROVIDERS_YAML: ${{ secrets.PROXY_PROVIDERS_YAML }}
   NETWORK_WAN_USERNAME: ${{ secrets.NETWORK_WAN_USERNAME }}
   NETWORK_WAN_PASSWORD: ${{ secrets.NETWORK_WAN_PASSWORD }}
   NETWORK_WG_PRESHARED_KEY_ONEPLUS: ${{ secrets.NETWORK_WG_PRESHARED_KEY_ONEPLUS }}
