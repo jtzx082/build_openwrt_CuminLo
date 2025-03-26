@@ -23,6 +23,11 @@ add_list dhcp.@host[-1].mac='A4:39:B6:10:FE:85'
 set dhcp.@host[-1].ip='192.168.50.4'
 
 add dhcp host
+set dhcp.@host[-1].name='container-jellyfin'
+add_list dhcp.@host[-1].mac='02:42:c0:a8:32:15'
+set dhcp.@host[-1].ip='192.168.50.21'
+
+add dhcp host
 set dhcp.@host[-1].name='container-qbittorrent'
 add_list dhcp.@host[-1].mac='02:42:c0:a8:32:16'
 set dhcp.@host[-1].ip='192.168.50.22'
@@ -46,6 +51,11 @@ add dhcp host
 set dhcp.@host[-1].name='container-note-red'
 add_list dhcp.@host[-1].mac='02:42:c0:a8:32:20'
 set dhcp.@host[-1].ip='192.168.50.26'
+
+add dhcp host
+set dhcp.@host[-1].name='container-uptime-kuma'
+add_list dhcp.@host[-1].mac='02:42:c0:a8:32:21'
+set dhcp.@host[-1].ip='192.168.50.27'
 
 add dhcp host
 set dhcp.@host[-1].name='Xiaomi-iot-gateway-hub1'
