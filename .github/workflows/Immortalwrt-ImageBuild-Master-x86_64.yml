@@ -21,7 +21,7 @@ env:
   NIKKI_FEED_URL: https://nikkinikki.pages.dev/openwrt-24.10/x86_64/nikki
   NETSPEEDTEST_URL: https://github.com/sirpdboy/netspeedtest.git
   GECOOSAC_URL: https://github.com/lwb1978/openwrt-gecoosac
-  IS_ENABLE: 0
+  IS_ENABLE: 1
   IS_SSH_DEBUG: false
   UPLOAD_RELEASE: true
   DELETE_USELESS_FILES: true
