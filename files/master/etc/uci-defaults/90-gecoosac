@@ -1,0 +1,7 @@
+uci batch << EOF
+
+set gecoosac.config.enabled='$IS_ENABLE'
+set gecoosac.config.log='1'
+
+commit
+EOF
