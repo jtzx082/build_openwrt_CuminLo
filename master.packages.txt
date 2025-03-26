@@ -150,3 +150,11 @@ luci-i18n-ddns-go-zh-cn
 luci-i18n-nikki-zh-cn
 luci-i18n-netspeedtest-zh-cn
 luci-i18n-gecoosac-zh-cn
+luci-i18n-ramfree-zh-cn
+luci-i18n-passwall-zh-cn
+luci-i18n-homeproxy-zh-cn
+luci-i18n-autoreboot-zh-cn
+luci-i18n-ddns-zh-cn
+luci-i18n-arpbind-zh-cn
+luci-i18n-vlmcsd-zh-cn
+luci-i18n-cifs-mount-zh-cn
