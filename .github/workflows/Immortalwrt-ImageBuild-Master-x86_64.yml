@@ -125,7 +125,7 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/sdk
         make -j$(nproc) package/netspeedtest/luci-app-netspeedtest/compile \
-          package/openwrt-gecoosac/luci-app-gecoosac/compile
+          package/openwrt-gecoosac/luci-app-gecoosac/compile \
           package/nikki/luci-app-nikki/compile V=s || { echo "Compile failed"; exit 1; }
         echo '============1============='
         ls -al $GITHUB_WORKSPACE/sdk/bin/packages/x86_64/base/
