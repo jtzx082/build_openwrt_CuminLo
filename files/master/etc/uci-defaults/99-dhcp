@@ -118,6 +118,11 @@ add_list dhcp.@host[-1].mac='B8:12:DA:CF:13:35'
 set dhcp.@host[-1].ip='192.168.50.82'
 
 add dhcp host
+set dhcp.@host[-1].name='IOT-MiHome-zhimi-airpurifier'
+add_list dhcp.@host[-1].mac='64:90:C1:F3:38:94'
+set dhcp.@host[-1].ip='192.168.50.83'
+
+add dhcp host
 set dhcp.@host[-1].name='MiAiSoundbox-L05C.lan'
 add_list dhcp.@host[-1].mac='90:FB:5D:02:AC:91'
 set dhcp.@host[-1].ip='192.168.50.100'
