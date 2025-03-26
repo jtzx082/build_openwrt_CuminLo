@@ -7,10 +7,10 @@ set network.lan.netmask='255.255.255.0'
 set network.lan.ip6assign='64'
 set network.lan.ip6ifaceid='eui64'
 
-uci set network.wan.proto='pppoe'
-uci set network.wan.ipv6='auto'
-uci set network.wan.username='$NETWORK_WAN_USERNAME'
-uci set network.wan.password='$NETWORK_WAN_PASSWORD'
+set network.wan.proto='pppoe'
+set network.wan.ipv6='auto'
+set network.wan.username='$NETWORK_WAN_USERNAME'
+set network.wan.password='$NETWORK_WAN_PASSWORD'
 
 set network.MODEM=interface
 set network.MODEM.proto='static'
