@@ -73,9 +73,9 @@ kmod-nft-tproxy
 kmod-nft-socket
 kmod-tun
 kmod-drm-i915
--kmod-wireguard
--wireguard-tools
--luci-proto-wireguard
+kmod-wireguard
+wireguard-tools
+luci-proto-wireguard
 adguardhome
 q
 jq
@@ -134,13 +134,13 @@ tailscale
 luci-i18n-netdata-zh-cn
 luci-i18n-package-manager-zh-cn
 luci-i18n-zerotier-zh-cn
--luci-i18n-airplay2-zh-cn
+luci-i18n-airplay2-zh-cn
 luci-i18n-diskman-zh-cn
 luci-i18n-filemanager-zh-cn
 luci-i18n-ttyd-zh-cn
 luci-i18n-upnp-zh-cn
 luci-i18n-wol-zh-cn
--luci-i18n-cloudflared-zh-cn
+luci-i18n-cloudflared-zh-cn
 luci-i18n-nfs-zh-cn
 luci-i18n-firewall-zh-cn
 luci-i18n-cpulimit-zh-cn
@@ -149,7 +149,7 @@ luci-i18n-nlbwmon-zh-cn
 luci-i18n-ddns-go-zh-cn
 luci-i18n-nikki-zh-cn
 luci-i18n-netspeedtest-zh-cn
--luci-i18n-gecoosac-zh-cn
+luci-i18n-gecoosac-zh-cn
 luci-i18n-ramfree-zh-cn
 luci-i18n-passwall-zh-cn
 luci-i18n-homeproxy-zh-cn
