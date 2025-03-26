@@ -2,7 +2,7 @@ uci batch << EOF
 
 del dhcp.lan.ra_slaac
 del dhcp.lan.dhcpv6
-set dhcp.lan.leasetime='12h'
+set dhcp.lan.leasetime='6h'
 add_list dhcp.lan.dhcp_option='3,192.168.50.1'
 add_list dhcp.lan.dhcp_option='6,192.168.50.1'
 del dhcp.lan.ra_flags
