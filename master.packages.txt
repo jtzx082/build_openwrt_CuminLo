@@ -31,12 +31,6 @@ kmod-r8125
 kmod-r8126
 kmod-r8168
 kmod-tulip
-kmod-usb-hid
-kmod-usb-net
-kmod-usb-net-asix
-kmod-usb-net-asix-ax88179
-kmod-usb-net-rtl8150
-kmod-usb-net-rtl8152-vendor
 kmod-vmxnet3
 libc
 libgcc
@@ -76,9 +70,9 @@ kmod-ipt-conntrack-extra
 kmod-ipt-conntrack-label
 kmod-ipt-nat
 kmod-nft-tproxy
+kmod-nft-socket
 kmod-tun
 kmod-drm-i915
-kmod-usb-audio
 kmod-wireguard
 wireguard-tools
 luci-proto-wireguard
@@ -96,6 +90,13 @@ cfdisk
 fdisk
 kmod-usb2
 kmod-usb3
+kmod-usb-hid
+kmod-usb-net
+kmod-usb-audio
+kmod-usb-net-asix
+kmod-usb-net-asix-ax88179
+kmod-usb-net-rtl8150
+kmod-usb-net-rtl8152-vendor
 usbutils
 usb-modeswitch
 wireless-tools
