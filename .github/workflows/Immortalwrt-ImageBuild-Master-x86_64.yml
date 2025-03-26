@@ -20,7 +20,8 @@ env:
   NIKKI_URL: https://github.com/nikkinikki-org/OpenWrt-nikki
   NIKKI_FEED_URL: https://nikkinikki.pages.dev/openwrt-24.10/x86_64/nikki
   NETSPEEDTEST_URL: https://github.com/sirpdboy/netspeedtest.git
-  IS_ENABLE: 1
+  GECOOSAC_URL: https://github.com/lwb1978/openwrt-gecoosac
+  IS_ENABLE: 0
   IS_SSH_DEBUG: false
   UPLOAD_RELEASE: true
   DELETE_USELESS_FILES: true
@@ -111,6 +112,7 @@ jobs:
         cd $GITHUB_WORKSPACE/sdk
         git clone $NETSPEEDTEST_URL package/netspeedtest
         git clone $NIKKI_URL package/nikki
+        git clone $GECOOSAC_URL package/openwrt-gecoosac
         ./scripts/feeds update -a
         ./scripts/feeds install -a
         make defconfig
@@ -123,6 +125,7 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/sdk
         make -j$(nproc) package/netspeedtest/luci-app-netspeedtest/compile \
+          package/openwrt-gecoosac/luci-app-gecoosac/compile
           package/nikki/luci-app-nikki/compile V=s || { echo "Compile failed"; exit 1; }
         echo '============1============='
         ls -al $GITHUB_WORKSPACE/sdk/bin/packages/x86_64/base/

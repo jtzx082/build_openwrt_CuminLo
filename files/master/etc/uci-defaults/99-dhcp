@@ -98,14 +98,9 @@ add_list dhcp.@host[-1].mac='24:5E:48:B2:22:88'
 set dhcp.@host[-1].ip='192.168.50.65'
 
 add dhcp host
-set dhcp.@host[-1].name='k9.lan'
-add_list dhcp.@host[-1].mac='08:7D:B8:4E:17:5F'
-set dhcp.@host[-1].ip='192.168.50.66'
-
-add dhcp host
 set dhcp.@host[-1].name='Phone-Xiaomi-12X.lan'
 add_list dhcp.@host[-1].mac='50:98:39:2B:1A:34'
-set dhcp.@host[-1].ip='192.168.50.67'
+set dhcp.@host[-1].ip='192.168.50.66'
 
 add dhcp host
 set dhcp.@host[-1].name='Print-Epson.lan'
@@ -121,11 +116,6 @@ add dhcp host
 set dhcp.@host[-1].name='IOT-BCD-408WPJD.lan'
 add_list dhcp.@host[-1].mac='B8:12:DA:CF:13:35'
 set dhcp.@host[-1].ip='192.168.50.82'
-
-add dhcp host
-set dhcp.@host[-1].name='saygift.wol.wifi.lan'
-add_list dhcp.@host[-1].mac='EC:64:C9:CC:E2:10'
-set dhcp.@host[-1].ip='192.168.50.83'
 
 add dhcp host
 set dhcp.@host[-1].name='MiAiSoundbox-L05C.lan'
